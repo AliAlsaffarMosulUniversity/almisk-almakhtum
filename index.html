@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المسك المختوم — نافذتك على المحتوى الإسلامي في يوتيوب</title>
+<meta name="description" content="المسك المختوم: نافذة واحدة على المحتوى الإسلامي في يوتيوب — القرآن الكريم، التفسير، الحديث، الخطب، الدعوة، السيرة، الأذكار، وركن الأطفال.">
+<meta name="theme-color" content="#0b1f1a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07140f; --bg2:#0d231b; --card:rgba(255,255,255,.055); --line:rgba(255,255,255,.11);
+  --text:#f3f7f4; --muted:#a9bdb3; --gold:#e7c36a; --gold2:#b8892f; --chip:rgba(255,255,255,.08);
+  --shadow:0 14px 34px rgba(0,0,0,.38);
+}
+:root[data-theme="light"]{
+  --bg:#f5f1e6; --bg2:#ece5d2; --card:#ffffff; --line:rgba(20,50,40,.13);
+  --text:#12261f; --muted:#56695f; --gold:#9a6d14; --gold2:#b8892f; --chip:rgba(20,60,45,.07);
+  --shadow:0 12px 28px rgba(40,60,50,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:"Tajawal",system-ui,"Segoe UI",Tahoma,sans-serif; color:var(--text);
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(231,195,106,.16), transparent 60%),
+    radial-gradient(800px 520px at 0% 10%, rgba(16,185,129,.16), transparent 60%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+  background-attachment:fixed; min-height:100vh; line-height:1.6;
+  -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:1120px; margin:0 auto; padding:0 16px calc(40px + env(safe-area-inset-bottom))}
+a{color:inherit; text-decoration:none}
+button{font-family:inherit; color:inherit}
+
+/* top bar */
+.bar{position:sticky; top:0; z-index:20; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  background:color-mix(in srgb,var(--bg) 78%,transparent); border-bottom:1px solid var(--line)}
+.bar-in{max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:10px}
+.brand{display:flex; align-items:center; gap:10px; cursor:pointer; background:none; border:0; padding:0}
+.brand img{width:38px; height:38px; border-radius:11px; box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.brand b{font-family:"Amiri",serif; font-size:23px; color:var(--gold); letter-spacing:.3px}
+.sp{flex:1}
+.ib{width:42px; height:42px; border-radius:13px; border:1px solid var(--line); background:var(--chip);
+  font-size:19px; cursor:pointer; display:grid; place-items:center; transition:.18s}
+.ib:hover{transform:translateY(-2px); border-color:var(--gold)}
+
+/* hero */
+.hero{text-align:center; padding:34px 6px 8px}
+.hero .bas{font-family:"Amiri",serif; color:var(--gold); font-size:clamp(20px,4.4vw,28px); margin:0}
+.hero h1{font-family:"Amiri",serif; font-size:clamp(40px,10vw,74px); margin:4px 0 2px; line-height:1.25;
+  background:linear-gradient(120deg,#f6e3a6,var(--gold) 45%,var(--gold2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+:root[data-theme="light"] .hero h1{background:linear-gradient(120deg,#8a5d0c,#b8892f); -webkit-background-clip:text; background-clip:text}
+.hero p{color:var(--muted); margin:0 auto; max-width:620px; font-size:clamp(15px,3.6vw,18px)}
+
+.search{margin:22px auto 6px; max-width:680px; display:flex; gap:8px; background:var(--card); border:1px solid var(--line);
+  border-radius:20px; padding:7px; box-shadow:var(--shadow)}
+.search input{flex:1; min-width:0; background:none; border:0; outline:0; color:var(--text); font:500 17px "Tajawal",sans-serif; padding:10px 14px}
+.search input::placeholder{color:var(--muted)}
+.go{border:0; cursor:pointer; border-radius:15px; padding:0 22px; font:800 16px "Tajawal",sans-serif; color:#1b1404;
+  background:linear-gradient(135deg,#f3d98c,#d8a94a); transition:.18s}
+.go:hover{filter:brightness(1.08); transform:translateY(-1px)}
+
+h2.sec{font-size:20px; margin:30px 4px 12px; display:flex; align-items:center; gap:8px}
+h2.sec small{color:var(--muted); font-weight:500; font-size:14px}
+
+/* category grid */
+.grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(158px,1fr))}
+.cat{position:relative; overflow:hidden; border:0; cursor:pointer; text-align:right; color:#fff;
+  border-radius:24px; padding:18px 16px 16px; min-height:148px; display:flex; flex-direction:column; justify-content:flex-end;
+  background:linear-gradient(140deg,var(--a),var(--b)); box-shadow:0 12px 26px color-mix(in srgb,var(--b) 45%,transparent);
+  transition:transform .2s, box-shadow .2s, filter .2s}
+.cat::before{content:""; position:absolute; inset:-40% auto auto -30%; width:170px; height:170px; border-radius:50%;
+  background:rgba(255,255,255,.16)}
+.cat::after{content:""; position:absolute; inset:auto -25% -55% auto; width:190px; height:190px; border-radius:50%;
+  background:rgba(0,0,0,.13)}
+.cat:hover,.cat:focus-visible{transform:translateY(-6px) scale(1.02); filter:saturate(1.15); outline:0;
+  box-shadow:0 20px 36px color-mix(in srgb,var(--b) 60%,transparent)}
+.cat:active{transform:scale(.97)}
+.cat .ic{position:absolute; top:12px; left:14px; font-size:40px; z-index:1; filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+.cat b{position:relative; z-index:1; font-size:19px; font-weight:800; line-height:1.35}
+.cat span{position:relative; z-index:1; font-size:13px; opacity:.92; margin-top:2px}
+
+/* category page */
+.head{margin-top:20px; border-radius:26px; padding:22px 20px; color:#fff; position:relative; overflow:hidden;
+  background:linear-gradient(140deg,var(--a),var(--b)); box-shadow:var(--shadow)}
+.head::after{content:""; position:absolute; inset:auto -60px -90px auto; width:240px; height:240px; border-radius:50%; background:rgba(255,255,255,.13)}
+.head .ic{font-size:46px; line-height:1}
+.head h2{margin:6px 0 2px; font-size:clamp(26px,6vw,36px); font-weight:800}
+.head p{margin:0; opacity:.95; position:relative; z-index:1}
+.back{display:inline-flex; align-items:center; gap:6px; margin-top:16px; background:var(--chip); border:1px solid var(--line);
+  border-radius:14px; padding:9px 16px; cursor:pointer; font:700 15px "Tajawal",sans-serif}
+.back:hover{border-color:var(--gold)}
+
+.tools{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 4px; align-items:center}
+.tools .lbl{color:var(--muted); font-size:14px; margin-inline-end:2px}
+.chip{border:1px solid var(--line); background:var(--chip); border-radius:999px; padding:7px 15px; cursor:pointer;
+  font:700 14px "Tajawal",sans-serif; transition:.15s}
+.chip[aria-pressed="true"]{background:linear-gradient(135deg,#f3d98c,#d8a94a); color:#1b1404; border-color:transparent}
+
+.list{display:grid; gap:11px; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); margin-top:14px}
+.item{display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:18px;
+  padding:6px 8px 6px 6px; transition:.18s; border-inline-start:5px solid var(--a)}
+.item:hover{transform:translateY(-3px); border-color:var(--a); box-shadow:var(--shadow)}
+.item a{flex:1; padding:11px 8px; font-weight:700; font-size:16px; display:flex; align-items:center; gap:9px; min-width:0}
+.item a .play{flex:none; width:30px; height:30px; border-radius:50%; background:linear-gradient(140deg,var(--a),var(--b));
+  display:grid; place-items:center; color:#fff; font-size:12px}
+.item a .tx{overflow:hidden; text-overflow:ellipsis}
+.star{flex:none; width:38px; height:38px; border-radius:12px; border:0; background:none; cursor:pointer; font-size:19px; color:var(--muted)}
+.star.on{color:var(--gold)}
+.star:hover{background:var(--chip)}
+
+.pick{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:16px; background:var(--card); border:1px solid var(--line);
+  border-radius:18px; padding:12px 14px}
+.pick label{font-weight:700}
+.pick select,.pick input{flex:1; min-width:170px; background:var(--chip); color:var(--text); border:1px solid var(--line); border-radius:12px;
+  padding:10px 12px; font:500 16px "Tajawal",sans-serif; outline:0}
+.pick select option{color:#12261f; background:#fff}
+.note{color:var(--muted); font-size:14px; margin:10px 4px 0}
+
+.empty{color:var(--muted); background:var(--card); border:1px dashed var(--line); border-radius:18px; padding:16px; text-align:center}
+footer{margin-top:44px; text-align:center; color:var(--muted); font-size:14px; border-top:1px solid var(--line); padding-top:18px}
+footer .aya{font-family:"Amiri",serif; color:var(--gold); font-size:22px; display:block; margin-bottom:4px}
+.fade{animation:fade .35s ease both}
+@keyframes fade{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+@media (max-width:420px){ .grid{grid-template-columns:repeat(2,1fr); gap:11px} .cat{min-height:136px; border-radius:20px} .cat b{font-size:17px} .cat .ic{font-size:34px} }
+@media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
+</style>
+</head>
+<body>
+<div class="bar"><div class="bar-in">
+  <button class="brand" id="home" aria-label="الرئيسية"><img src="icon.svg" alt=""><b>المسك المختوم</b></button>
+  <span class="sp"></span>
+  <button class="ib" id="favBtn" title="المفضلة" aria-label="المفضلة">★</button>
+  <button class="ib" id="theme" title="تبديل المظهر" aria-label="تبديل المظهر">☀</button>
+</div></div>
+
+<main class="wrap" id="app"></main>
+
+<script>
+/* ================== البيانات ================== */
+const YT = "https://www.youtube.com/results?search_query=";
+const MODES = [
+  {id:"all",  t:"الكل",           sp:""},
+  {id:"list", t:"قوائم تشغيل",    sp:"EgIQAw%3D%3D"},
+  {id:"long", t:"مقاطع طويلة",    sp:"EgIYAg%3D%3D"},
+  {id:"new",  t:"الأحدث",         sp:"CAI%3D"},
+  {id:"live", t:"بث مباشر",       sp:"EgJAAQ%3D%3D"},
+  {id:"chan", t:"قنوات",          sp:"EgIQAg%3D%3D"}
+];
+
+const SURAHS = "الفاتحة،البقرة،آل عمران،النساء،المائدة،الأنعام،الأعراف،الأنفال،التوبة،يونس،هود،يوسف،الرعد،إبراهيم،الحجر،النحل،الإسراء،الكهف،مريم،طه،الأنبياء،الحج،المؤمنون،النور،الفرقان،الشعراء،النمل،القصص،العنكبوت،الروم،لقمان،السجدة،الأحزاب،سبأ،فاطر،يس،الصافات،ص،الزمر،غافر،فصلت،الشورى،الزخرف،الدخان،الجاثية،الأحقاف،محمد،الفتح،الحجرات،ق،الذاريات،الطور،النجم،القمر،الرحمن،الواقعة،الحديد،المجادلة،الحشر،الممتحنة،الصف،الجمعة،المنافقون،التغابن،الطلاق،التحريم،الملك،القلم،الحاقة،المعارج،نوح،الجن،المزمل،المدثر،القيامة،الإنسان،المرسلات،النبأ،النازعات،عبس،التكوير،الانفطار،المطففين،الانشقاق،البروج،الطارق،الأعلى،الغاشية،الفجر،البلد،الشمس،الليل،الضحى،الشرح،التين،العلق،القدر،البينة،الزلزلة،العاديات،القارعة،التكاثر،العصر،الهمزة،الفيل،قريش،الماعون،الكوثر،الكافرون،النصر،المسد،الإخلاص،الفلق،الناس".split("،");
+
+const RECITERS = ["عبد الباسط عبد الصمد","محمد صديق المنشاوي","محمود خليل الحصري","مصطفى إسماعيل","محمود علي البنا","محمد رفعت",
+"مشاري راشد العفاسي","ماهر المعيقلي","عبد الرحمن السديس","سعود الشريم","ياسر الدوسري","بندر بليلة","عبد الله الجهني",
+"علي الحذيفي","صلاح البدير","علي جابر","محمد أيوب","سعد الغامدي","أحمد العجمي","ناصر القطامي","فارس عباد",
+"أبو بكر الشاطري","عبد الله بصفر","هاني الرفاعي","إدريس أبكر","خالد الجليل","محمد اللحيدان","هزاع البلوشي",
+"عبد الرحمن مسعد","إسلام صبحي","وديع اليمني","محمد الطبلاوي","عبد الله المطرود","عبد الودود حنيف","أحمد نعينع","رعد محمد الكردي"];
+
+const I = (t,q)=>({t,q:q||t});
+const CATS = [
+ {id:"quran", t:"القرآن الكريم", d:"جميع القرّاء والسور", ic:"📖", a:"#10b981", b:"#047857", quran:true,
+  items:[I("القرآن الكريم كاملاً","القرآن الكريم كاملا"),I("تلاوات خاشعة","تلاوات خاشعة مؤثرة"),I("قرآن قبل النوم","قرآن كريم هادئ للنوم"),
+         I("سورة البقرة كاملة"),I("سورة الكهف كاملة"),I("جزء عمّ كاملاً","جزء عم كاملا"),I("ختمة الحرم المكي","ختمة المسجد الحرام كاملة"),
+         I("ختمة الحرم النبوي","ختمة المسجد النبوي كاملة"),I("القرآن مع الترجمة","القرآن الكريم مترجم")]},
+ {id:"tajweed", t:"التجويد والحفظ", d:"تعلّم التلاوة الصحيحة", ic:"🎓", a:"#14b8a6", b:"#0f766e",
+  items:[I("أحكام التجويد للمبتدئين"),I("مخارج الحروف","شرح مخارج الحروف وصفاتها"),I("القاعدة النورانية","القاعدة النورانية كاملة"),
+         I("المصحف المعلّم","المصحف المعلم للكبار"),I("تحفيظ القرآن","طريقة حفظ القرآن الكريم"),I("تصحيح التلاوة","تصحيح تلاوة القرآن"),
+         I("القراءات العشر","شرح القراءات العشر"),I("شرح تحفة الأطفال"),I("شرح المقدمة الجزرية")]},
+ {id:"tafsir", t:"التفسير", d:"تدبّر وعلوم القرآن", ic:"💡", a:"#3b82f6", b:"#1d4ed8",
+  items:[I("تفسير القرآن كاملاً","تفسير القرآن الكريم كاملا"),I("التفسير الميسّر","التفسير الميسر"),I("تفسير ابن كثير"),I("تفسير السعدي"),
+         I("تفسير جزء عمّ","تفسير جزء عم"),I("تدبّر القرآن","تدبر القرآن الكريم"),I("أسباب النزول"),I("قصص القرآن"),I("علوم القرآن","دروس علوم القرآن")]},
+ {id:"hadith", t:"الحديث والسنة", d:"شروح كتب الحديث", ic:"📜", a:"#f59e0b", b:"#b45309",
+  items:[I("شرح الأربعين النووية"),I("شرح رياض الصالحين"),I("شرح صحيح البخاري"),I("شرح صحيح مسلم"),I("شرح بلوغ المرام"),
+         I("شرح عمدة الأحكام"),I("الأحاديث القدسية"),I("مصطلح الحديث","شرح مصطلح الحديث"),I("أحاديث نبوية قصيرة","أحاديث نبوية صحيحة قصيرة")]},
+ {id:"khutab", t:"الخطب", d:"الجمعة والأعياد والحرمين", ic:"🕌", a:"#8b5cf6", b:"#6d28d9",
+  items:[I("خطب الجمعة","خطبة الجمعة"),I("خطبة المسجد الحرام","خطبة الجمعة من المسجد الحرام"),I("خطبة المسجد النبوي","خطبة الجمعة من المسجد النبوي"),
+         I("خطبة المسجد الأقصى","خطبة الجمعة من المسجد الأقصى"),I("خطبة عيد الفطر"),I("خطبة عيد الأضحى"),I("خطبة يوم عرفة"),
+         I("خطب مؤثرة","خطبة جمعة مؤثرة"),I("خطب قصيرة","خطبة جمعة قصيرة")]},
+ {id:"dawah", t:"الدعوة إلى الله", d:"التعريف بالإسلام", ic:"🌍", a:"#f97316", b:"#c2410c",
+  items:[I("التعريف بالإسلام","ما هو الإسلام"),I("قصص المهتدين","قصص إسلام المهتدين الجدد"),I("حوارات دعوية","حوار دعوي مع غير المسلمين"),
+         I("الرد على الشبهات","الرد على الشبهات حول الإسلام"),I("فقه الدعوة","فقه الدعوة إلى الله وأساليبها"),I("محاسن الإسلام"),
+         I("دلائل النبوة"),I("الإعجاز العلمي","الإعجاز العلمي في القرآن والسنة")]},
+ {id:"seerah", t:"السيرة النبوية", d:"حياة النبي ﷺ وصحابته", ic:"🌙", a:"#f43f5e", b:"#be123c",
+  items:[I("السيرة النبوية كاملة"),I("الشمائل المحمدية","شرح الشمائل المحمدية"),I("غزوات النبي ﷺ","غزوات النبي صلى الله عليه وسلم"),
+         I("الهجرة النبوية"),I("حياة الصحابة","سير الصحابة"),I("الخلفاء الراشدون","سيرة الخلفاء الراشدين"),I("أمهات المؤمنين","سيرة أمهات المؤمنين"),
+         I("الصحابيات","قصص الصحابيات")]},
+ {id:"stories", t:"قصص الأنبياء والتاريخ", d:"عِبر من السابقين", ic:"🏛️", a:"#6366f1", b:"#4338ca",
+  items:[I("قصص الأنبياء كاملة","قصص الأنبياء كاملة"),I("قصة آدم عليه السلام"),I("قصة نوح عليه السلام"),I("قصة إبراهيم عليه السلام"),
+         I("قصة يوسف عليه السلام"),I("قصة موسى عليه السلام"),I("قصة عيسى عليه السلام"),I("التاريخ الإسلامي"),I("الحضارة الإسلامية"),I("تاريخ الأندلس")]},
+ {id:"fiqh", t:"الفقه والفتاوى", d:"أحكام العبادات والمعاملات", ic:"⚖️", a:"#06b6d4", b:"#0e7490",
+  items:[I("أحكام الطهارة","شرح أحكام الطهارة"),I("صفة الصلاة","صفة صلاة النبي"),I("أحكام الصيام"),I("أحكام الزكاة"),I("الحج والعمرة","شرح مناسك الحج والعمرة"),
+         I("فقه المعاملات","فقه المعاملات المالية"),I("فتاوى على الهواء","فتاوى على الهواء"),I("فقه الأسرة","فقه الأسرة والنكاح"),I("أصول الفقه","شرح أصول الفقه")]},
+ {id:"aqeedah", t:"العقيدة والإيمان", d:"أركان الإيمان والتوحيد", ic:"✨", a:"#0ea5e9", b:"#0369a1",
+  items:[I("أركان الإسلام","شرح أركان الإسلام"),I("أركان الإيمان","شرح أركان الإيمان"),I("أسماء الله الحسنى","شرح أسماء الله الحسنى"),
+         I("التوحيد","دروس التوحيد"),I("اليوم الآخر","الإيمان باليوم الآخر"),I("علامات الساعة"),I("الجنة والنار","وصف الجنة والنار"),I("القضاء والقدر","الإيمان بالقضاء والقدر")]},
+ {id:"adhkar", t:"الأذكار والأدعية", d:"حصن المسلم اليومي", ic:"🤲", a:"#22c55e", b:"#15803d",
+  items:[I("أذكار الصباح"),I("أذكار المساء"),I("أذكار النوم"),I("أذكار بعد الصلاة"),I("الرقية الشرعية","الرقية الشرعية كاملة"),
+         I("دعاء ختم القرآن"),I("دعاء القنوت","دعاء القنوت من الحرم"),I("الاستغفار","استغفار وتسبيح"),I("أدعية من القرآن والسنة","أدعية من القرآن والسنة")]},
+ {id:"mawaiz", t:"المواعظ والرقائق", d:"ما يليّن القلوب", ic:"💧", a:"#a855f7", b:"#7e22ce",
+  items:[I("مواعظ مؤثرة","موعظة مؤثرة"),I("التوبة","التوبة والرجوع إلى الله"),I("الموت والآخرة","موعظة عن الموت والآخرة"),I("الصبر","الصبر على البلاء"),
+         I("حسن الخلق"),I("محاسبة النفس"),I("حسن الظن بالله"),I("مقاطع قصيرة","مقاطع إسلامية قصيرة مؤثرة")]},
+ {id:"lessons", t:"الدروس والمحاضرات", d:"سلاسل ودورات علمية", ic:"🎙️", a:"#64748b", b:"#334155",
+  items:[I("محاضرات إسلامية","محاضرة إسلامية كاملة"),I("دروس المسجد الحرام","دروس المسجد الحرام"),I("دروس المسجد النبوي","دروس المسجد النبوي"),
+         I("دورات علمية","دورة علمية شرعية"),I("شرح المتون","شرح المتون العلمية"),I("طلب العلم","منهجية طلب العلم الشرعي"),I("سلاسل علمية","سلسلة علمية شرعية كاملة")]},
+ {id:"live", t:"البث المباشر", d:"الحرمين وإذاعات القرآن", ic:"🔴", a:"#ef4444", b:"#b91c1c", mode:"live",
+  items:[I("قناة القرآن — مكة","قناة القرآن الكريم مكة المكرمة بث مباشر"),I("قناة السنة — المدينة","قناة السنة النبوية المدينة المنورة بث مباشر"),
+         I("إذاعة القرآن الكريم","إذاعة القرآن الكريم بث مباشر"),I("تلاوات مباشرة","قرآن كريم بث مباشر"),I("صلاة التراويح","صلاة التراويح بث مباشر"),
+         I("خطبة الجمعة","خطبة الجمعة بث مباشر")]},
+ {id:"adhan", t:"الأذان والصلوات", d:"من الحرمين والعالم", ic:"📣", a:"#d97706", b:"#92400e",
+  items:[I("أذان المسجد الحرام","أذان المسجد الحرام"),I("أذان المسجد النبوي","أذان المسجد النبوي"),I("أذان الفجر","أذان الفجر"),
+         I("أجمل أذان","أجمل أذان في العالم"),I("صلاة الفجر من الحرم","صلاة الفجر من المسجد الحرام"),I("صلاة التهجد","صلاة التهجد من الحرم المكي")]},
+ {id:"anasheed", t:"الأناشيد", d:"أناشيد وابتهالات", ic:"🎵", a:"#ec4899", b:"#be185d",
+  items:[I("أناشيد بدون موسيقى","أناشيد إسلامية بدون موسيقى"),I("أناشيد هادئة","أناشيد إسلامية هادئة"),I("مدائح نبوية","مدائح نبوية"),
+         I("ابتهالات","ابتهالات دينية"),I("أناشيد رمضان"),I("أناشيد العيد"),I("أناشيد الأعراس","أناشيد أعراس إسلامية")]},
+ {id:"kids", t:"ركن الأطفال", d:"تعليم ممتع للصغار", ic:"🧒", a:"#eab308", b:"#a16207",
+  items:[I("تعليم القرآن للأطفال"),I("جزء عمّ للأطفال","جزء عم للأطفال مكرر"),I("قصص الأنبياء للأطفال"),I("كرتون إسلامي","كرتون إسلامي للأطفال"),
+         I("تعليم الوضوء والصلاة","تعليم الوضوء والصلاة للأطفال"),I("أناشيد الأطفال","أناشيد إسلامية للأطفال"),I("آداب إسلامية","آداب إسلامية للأطفال"),I("أذكار للأطفال","أذكار الصباح والمساء للأطفال")]},
+ {id:"family", t:"الأسرة والشباب", d:"تربية وحياة زوجية", ic:"🏡", a:"#d946ef", b:"#a21caf",
+  items:[I("تربية الأبناء","تربية الأبناء في الإسلام"),I("الحياة الزوجية","السعادة الزوجية في الإسلام"),I("فقه المرأة","فقه المرأة المسلمة"),
+         I("بر الوالدين"),I("اختيار شريك الحياة","اختيار الزوج والزوجة في الإسلام"),I("همّة الشباب","محاضرات للشباب المسلم"),I("صلة الرحم")]},
+ {id:"seasons", t:"رمضان والحج", d:"مواسم الطاعات", ic:"🕋", a:"#84cc16", b:"#4d7c0f",
+  items:[I("صلاة التراويح","صلاة التراويح من الحرم المكي"),I("ليلة القدر"),I("برامج رمضان","برامج رمضان الدينية"),I("مناسك الحج","شرح مناسك الحج خطوة بخطوة"),
+         I("مناسك العمرة","شرح مناسك العمرة خطوة بخطوة"),I("يوم عرفة","فضل يوم عرفة"),I("عشر ذي الحجة","فضل عشر ذي الحجة"),I("أحكام العيدين")]},
+ {id:"langs", t:"الإسلام بلغات العالم", d:"English · Français · Türkçe", ic:"🌐", a:"#2dd4bf", b:"#0d9488",
+  items:[I("English","Islamic lectures in English"),I("Quran + English","Quran recitation with English translation"),I("Français","conférence islam en français"),
+         I("Türkçe","İslami sohbetler"),I("اردو","اسلامی بیانات اردو"),I("Indonesia","ceramah Islam"),I("Español","Islam en español"),
+         I("Deutsch","Islam Vortrag deutsch"),I("Русский","лекции об исламе")]}
+];
+
+/* ================== الحالة والتخزين ================== */
+const store = {
+  get(k,d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+let favs = store.get("misk-favs", []);
+let mode = "all";
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const url = (q, m) => { const sp = (MODES.find(x => x.id === (m || mode)) || MODES[0]).sp; return YT + encodeURIComponent(q) + (sp ? "&sp=" + sp : ""); };
+const isFav = q => favs.some(f => f.q === q);
+
+function itemHTML(it, cat){
+  return `<div class="item" style="--a:${cat.a};--b:${cat.b}">
+    <a href="${url(it.q)}" target="_blank" rel="noopener"><span class="play">▶</span><span class="tx">${esc(it.t)}</span></a>
+    <button class="star ${isFav(it.q) ? "on" : ""}" data-fav="${esc(it.q)}" data-t="${esc(it.t)}" data-c="${cat.id}" aria-label="إضافة إلى المفضلة" title="المفضلة">★</button>
+  </div>`;
+}
+
+/* ================== الصفحات ================== */
+function home(){
+  mode = "all";
+  document.title = "المسك المختوم — نافذتك على المحتوى الإسلامي في يوتيوب";
+  const favHTML = favs.length
+    ? `<div class="list">${favs.map(f => itemHTML(f, CATS.find(c => c.id === f.c) || CATS[0])).join("")}</div>`
+    : `<div class="empty">اضغط على النجمة ★ بجانب أي عنوان ليظهر هنا.</div>`;
+  app.innerHTML = `
+  <section class="hero fade">
+    <p class="bas">﴿ خِتَامُهُ مِسْكٌ ﴾</p>
+    <h1>المسك المختوم</h1>
+    <p>نافذتك الواحدة على المحتوى الإسلامي في يوتيوب. اختر القسم، ثم اختر ما تريد.</p>
+    <form class="search" id="gs">
+      <input id="gq" type="search" placeholder="ابحث عن قارئ، سورة، درس، خطبة..." autocomplete="off" aria-label="بحث">
+      <button class="go" type="submit">بحث</button>
+    </form>
+  </section>
+  <h2 class="sec">الأقسام <small>${CATS.length} قسماً</small></h2>
+  <section class="grid fade">
+    ${CATS.map(c => `<button class="cat" data-go="${c.id}" style="--a:${c.a};--b:${c.b}">
+        <span class="ic" aria-hidden="true">${c.ic}</span><b>${esc(c.t)}</b><span>${esc(c.d)}</span></button>`).join("")}
+  </section>
+  <h2 class="sec" id="favs">★ المفضلة <small>${favs.length ? favs.length : ""}</small></h2>
+  ${favHTML}
+  ${foot()}`;
+  document.getElementById("gs").onsubmit = e => {
+    e.preventDefault();
+    const v = document.getElementById("gq").value.trim();
+    if (v) window.open(url(v, "all"), "_blank", "noopener");
+  };
+}
+
+function catPage(cat){
+  document.title = cat.t + " — المسك المختوم";
+  mode = cat.mode || "all";
+  app.innerHTML = `
+  <button class="back" data-home>→ الرئيسية</button>
+  <section class="head fade" style="--a:${cat.a};--b:${cat.b}">
+    <div class="ic" aria-hidden="true">${cat.ic}</div>
+    <h2>${esc(cat.t)}</h2><p>${esc(cat.d)}</p>
+  </section>
+  <div class="tools"><span class="lbl">نوع النتائج:</span>
+    ${MODES.map(m => `<button class="chip" data-mode="${m.id}" aria-pressed="${m.id === mode}">${m.t}</button>`).join("")}
+  </div>
+  <form class="pick" id="cs">
+    <label for="cq">بحث داخل القسم</label>
+    <input id="cq" type="search" placeholder="اكتب ما تبحث عنه في ${esc(cat.t)}" autocomplete="off">
+    <button class="go" type="submit" style="padding:10px 20px">بحث</button>
+  </form>
+  <div id="body"></div>
+  ${foot()}`;
+  document.getElementById("cs").onsubmit = e => {
+    e.preventDefault();
+    const v = document.getElementById("cq").value.trim();
+    if (v) window.open(url(v + " " + (cat.id === "langs" ? "Islam" : cat.t)), "_blank", "noopener");
+  };
+  body(cat);
+  window.scrollTo(0, 0);
+}
+
+function body(cat){
+  const el = document.getElementById("body");
+  let h = "";
+  if (cat.quran){
+    const s = store.get("misk-surah", "");
+    h += `<h2 class="sec">القرّاء <small>${RECITERS.length} قارئاً</small></h2>
+    <div class="pick"><label for="surah">السورة</label>
+      <select id="surah"><option value="">المصحف كاملاً</option>
+      ${SURAHS.map((n, i) => `<option value="${n}" ${n === s ? "selected" : ""}>${i + 1}. سورة ${n}</option>`).join("")}</select>
+    </div>
+    <p class="note">اختر السورة أولاً، ثم اضغط على اسم القارئ.</p>
+    <div class="list">${RECITERS.map(r => {
+      const q = (s ? "سورة " + s : "القرآن الكريم كاملا") + " بصوت " + r;
+      return itemHTML({t: r, q}, cat);
+    }).join("")}</div>
+    <h2 class="sec">مختارات</h2>`;
+  }
+  h += `<div class="list fade">${cat.items.map(it => itemHTML(it, cat)).join("")}</div>`;
+  el.innerHTML = h;
+  const sel = document.getElementById("surah");
+  if (sel) sel.onchange = () => { store.set("misk-surah", sel.value); body(cat); };
+}
+
+function foot(){
+  return `<footer><span class="aya">﴿ وَفِي ذَٰلِكَ فَلْيَتَنَافَسِ الْمُتَنَافِسُونَ ﴾</span>
+  المسك المختوم — جميع المقاطع تُعرض من يوتيوب مباشرة، والتطبيق لا يستضيف أي محتوى.<br>تصميم: علي الصفار</footer>`;
+}
+
+/* ================== التنقل والأحداث ================== */
+function route(){
+  const id = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
+  const cat = CATS.find(c => c.id === id);
+  cat ? catPage(cat) : home();
+  if (id === "favs"){ const f = document.getElementById("favs"); if (f) f.scrollIntoView(); }
+}
+window.addEventListener("hashchange", route);
+
+document.addEventListener("click", e => {
+  const go = e.target.closest("[data-go]");
+  if (go){ location.hash = "#/" + go.dataset.go; return; }
+  if (e.target.closest("[data-home]") || e.target.closest("#home")){ location.hash = "#/"; return; }
+  const m = e.target.closest("[data-mode]");
+  if (m){
+    mode = m.dataset.mode;
+    document.querySelectorAll("[data-mode]").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === mode));
+    const cat = CATS.find(c => c.id === decodeURIComponent(location.hash.replace(/^#\/?/, "")));
+    if (cat) body(cat);
+    return;
+  }
+  const st = e.target.closest("[data-fav]");
+  if (st){
+    const q = st.dataset.fav;
+    if (isFav(q)) favs = favs.filter(f => f.q !== q);
+    else favs.unshift({t: st.dataset.t, q, c: st.dataset.c});
+    store.set("misk-favs", favs);
+    const onHome = !CATS.some(c => "#/" + c.id === location.hash);
+    if (onHome) home(); else st.classList.toggle("on");
+  }
+});
+document.getElementById("favBtn").onclick = () => {
+  if (location.hash === "#/favs") { const f = document.getElementById("favs"); if (f) f.scrollIntoView(); }
+  else location.hash = "#/favs";
+};
+
+/* المظهر */
+const root = document.documentElement, tb = document.getElementById("theme");
+function setTheme(t){ root.dataset.theme = t; tb.textContent = t === "light" ? "☾" : "☀"; store.set("misk-theme", t); }
+setTheme(store.get("misk-theme", "dark"));
+tb.onclick = () => setTheme(root.dataset.theme === "light" ? "dark" : "light");
+
+route();
+if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body>
+</html>
