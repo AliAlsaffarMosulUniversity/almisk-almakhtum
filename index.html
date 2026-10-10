@@ -654,27 +654,28 @@ function autoStart(){                       // يشغّل النشيد تلقا�
   };
   setTimeout(() => check(0), 1800);
 }
-let capDone = "";
+let capVid = "", capTries = 0;
 function captions(){            // ترجمة الفيديو باللغة المختارة: مسار بلغتها إن وُجد، وإلا ترجمة يوتيوب الآلية
   if (RTL || !player || !player.setOption) return;
   try {
-    const vid = (player.getVideoData() || {}).video_id || ""; if (!vid || capDone === vid) return;
+    const vid = (player.getVideoData() || {}).video_id || ""; if (!vid) return;
+    if (capVid !== vid){ capVid = vid; capTries = 0; }
+    if (capTries >= 5) return;               // نكرر الطلب عدة مرات لأن يوتيوب يتجاهله قبل أن يجهز النص
     player.loadModule && player.loadModule("captions");
     const cur = player.getOption("captions", "track") || {}, list = player.getOption("captions", "tracklist") || [];
+    const tls = player.getOption("captions", "translationLanguages") || [];
+    if (!cur.languageCode && !list.length && !tls.length) return;      // النص لم يجهز بعد (أو لا نص لهذا المقطع)
     const is = t => t && (t.languageCode || "").slice(0, 2) === LANG;
-    // لا نعتبر المهمة منجزة إلا بعد التأكد أن الترجمة طُبّقت فعلاً
-    if ((is(cur) && !cur.translationLanguage) || (cur.translationLanguage && cur.translationLanguage.languageCode === LANG)){ capDone = vid; return; }
-    const own = list.find(is);
-    if (own){ player.setOption("captions", "track", own); return; }
-    const base = cur.languageCode ? cur : list[0]; if (!base) return;
-    const tl = (player.getOption("captions", "translationLanguages") || []).find(t => t.languageCode === LANG);
-    if (!tl) return;
-    const b = Object.assign({}, base); delete b.translationLanguage;
+    capTries++;
+    const own = is(cur) ? cur : list.find(is);
+    if (own){ const o = Object.assign({}, own); delete o.translationLanguage; player.setOption("captions", "track", o); return; }
+    const tl = tls.find(t => t.languageCode === LANG) || {languageCode: LANG, languageName: LANG === "de" ? "Deutsch" : "English"};
+    const b = Object.assign({}, cur.languageCode ? cur : (list[0] || {languageCode:"ar", kind:"asr"})); delete b.translationLanguage;
     player.setOption("captions", "track", Object.assign(b, {translationLanguage: tl}));
   } catch(e){}
 }
 function onState(e){
-  if (e.data === 1){ errRun = 0; [600, 1500, 3000, 5000, 8000, 12000, 18000, 26000].forEach(ms => setTimeout(captions, ms)); }
+  if (e.data === 1){ errRun = 0; [800, 2000, 4000, 7000, 11000, 16000, 24000, 35000].forEach(ms => setTimeout(captions, ms)); }
   if (e.data === 1 || e.data === 3 || e.data === -1 || e.data === 5){
     const i = player.getPlaylistIndex ? player.getPlaylistIndex() : -1;
     if (i >= 0 && i !== cur.idx){ cur.idx = i; if (cur.type === "pl") cur.title = (i < SURAHS.length && (DATA.rec[view.rec] || {}).ord ? "سورة " + SURAHS[i] + " — " : "") + (view.rec || ""); }
