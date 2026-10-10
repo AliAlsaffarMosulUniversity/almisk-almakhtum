@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>المسك المختوم — نافذتك على المحتوى الإسلامي في يوتيوب</title>
 <meta name="description" content="المسك المختوم: شاشة عرض واحدة للمحتوى الإسلامي في يوتيوب — القرآن الكريم، التفسير، الحديث، الخطب، الدعوة، السيرة، الأذكار، وركن الأطفال.">
-<meta name="theme-color" content="#0b1f1a">
+<meta name="theme-color" content="#f5f1e6">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -681,9 +681,11 @@ window.addEventListener("hashchange", route);
 
 /* المظهر */
 const root = document.documentElement, tb = $("theme");
-function setTheme(t){ root.dataset.theme = t; tb.textContent = t === "light" ? "☾" : "☀"; store.set("misk-theme", t); }
-setTheme(store.get("misk-theme", "dark"));
-tb.onclick = () => setTheme(root.dataset.theme === "light" ? "dark" : "light");
+function setTheme(t, save){ root.dataset.theme = t; tb.textContent = t === "light" ? "☾" : "☀";
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = t === "light" ? "#f5f1e6" : "#0b1f1a";
+  if (save) store.set("misk-theme2", t); }
+setTheme(store.get("misk-theme2", "light"));          // الوضع النهاري هو القياسي
+tb.onclick = () => setTheme(root.dataset.theme === "light" ? "dark" : "light", true);
 
 /* عدّاد الزوار: زيارة واحدة لكل متصفح في اليوم */
 (function(){
