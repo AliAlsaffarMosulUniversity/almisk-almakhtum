@@ -471,10 +471,37 @@ function sides(){
 }
 
 /* ================== اللوحة ================== */
+/* ترجمة عناوين المقاطع إلى لغة الواجهة (ترجمة آلية، تُحفظ على الجهاز) */
+const TT = RTL ? null : store.get("misk-tt-" + LANG, {});
+let ttQ = [], ttTimer = null, ttBusy = false;
+function tt(v){
+  if (RTL || !v) return v ? v[1] : "";
+  if (TT[v[0]]) return TT[v[0]];
+  if (!/[\u0600-\u06FF]/.test(v[1])) return v[1];
+  if (!ttQ.some(x => x[0] === v[0])) ttQ.push(v);
+  clearTimeout(ttTimer); ttTimer = setTimeout(ttRun, 200);
+  return v[1];
+}
+async function ttRun(){
+  if (ttBusy || !ttQ.length) return; ttBusy = true;
+  const batch = ttQ.splice(0, 10);
+  try {
+    let res = null;
+    try {
+      const j = await getJSON("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=" + LANG + "&dt=t&q=" + encodeURIComponent(batch.map(v => v[1].replace(/\s+/g, " ")).join("\n")));
+      const lines = j[0].map(x => x[0]).join("").split("\n"); if (lines.length === batch.length) res = lines;
+    } catch(e){}
+    if (!res){ res = []; for (const v of batch){ try { const j = await getJSON("https://api.mymemory.translated.net/get?langpair=ar|" + LANG + "&q=" + encodeURIComponent(v[1])); res.push((j.responseData || {}).translatedText || ""); } catch(e){ res.push(""); } } }
+    batch.forEach((v, i) => { const t = (res[i] || "").trim(); if (!t) return; TT[v[0]] = t;
+      document.querySelectorAll('.v[data-id="' + v[0] + '"] .tx b').forEach(el => { el.textContent = t; }); });
+    const ks = Object.keys(TT); if (ks.length > 2500) ks.slice(0, 600).forEach(k => delete TT[k]);
+    store.set("misk-tt-" + LANG, TT); nowBar();
+  } finally { ttBusy = false; if (ttQ.length) setTimeout(ttRun, 250); }
+}
 function cardHTML(v, i){
   return `<div class="v ${cur.type === "vids" && cur.list[cur.idx] && cur.list[cur.idx][0] === v[0] ? "on" : ""}" data-play="${i}" data-id="${v[0]}" role="button" tabindex="0">
       <div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${v[0]}/mqdefault.jpg" alt="">${v[3] ? `<span>${esc(v[3])}</span>` : ""}<i>▶</i></div>
-      <div class="tx"><b>${esc(v[1])}</b><small>${esc(v[2])}</small></div>
+      <div class="tx"><b title="${esc(v[1])}">${esc(tt(v))}</b><small>${esc(v[2])}</small></div>
       <button class="star ${isFav(v[0]) ? "on" : ""}" data-fav="${i}" aria-label="المفضلة" title="المفضلة">★</button>
     </div>`;
 }
@@ -717,7 +744,7 @@ function onErr(){
 function nowBar(){
   const v = cur.type === "vids" ? cur.list[cur.idx] : null;
   let title = "شاشة العرض", sub = "لم يُختر مقطع بعد", id = "";
-  if (v){ title = v[1]; sub = v[2]; id = v[0]; }
+  if (v){ title = tt(v); sub = v[2]; id = v[0]; }
   else if (cur.type === "pl"){ title = cur.title || "قائمة تشغيل"; sub = "قائمة تشغيل"; try { const d = player && player.getVideoData && player.getVideoData(); if (d && d.video_id){ id = d.video_id; if (d.title) sub = d.title; } } catch(e){} }
   $("nowT").innerHTML = esc(title) + `<small>${esc(sub)}</small>`;
   const on = cur.type != null;
