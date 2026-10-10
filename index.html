@@ -47,9 +47,19 @@ button,input,select{font-family:inherit; color:inherit}
 .brand b{font-family:"Reem Kufi","Tajawal",sans-serif; font-weight:700; font-size:24px; white-space:nowrap; line-height:1.2}
 .gold{background:var(--shine); background-size:220% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:shine 5s linear infinite}
 @keyframes shine{to{background-position:-220% 0}}
-.find{flex:1; min-width:0; max-width:520px; margin-inline:auto; display:flex; background:var(--chip); border:1px solid var(--line); border-radius:14px}
-.find input{flex:1; min-width:0; background:none; border:0; outline:0; padding:9px 14px; font-size:16px}
-.find input::placeholder{color:var(--muted)}
+.find{flex:1; min-width:0; max-width:620px; margin-inline:auto; display:flex; align-items:center; gap:8px}
+.fbox{flex:1; min-width:0; height:44px; display:flex; align-items:center; gap:9px; padding:0 16px; border-radius:999px; border:2px solid transparent;
+  background:linear-gradient(var(--bg2),var(--bg2)) padding-box, var(--shine) border-box; background-size:auto, 220% 100%; animation:shineB 4s linear infinite;
+  box-shadow:0 0 14px rgba(231,195,106,.22), inset 0 1px 0 rgba(255,255,255,.06); transition:box-shadow .2s}
+@keyframes shineB{to{background-position:0 0, -220% 0}}
+.fbox:focus-within{box-shadow:0 0 0 3px rgba(231,195,106,.22), 0 0 24px rgba(231,195,106,.55)}
+.fbox svg{flex:none; color:var(--gold)}
+.find input{flex:1; min-width:0; background:none; border:0; outline:0; padding:0; font-size:16px; font-weight:500; color:var(--text)}
+.find input::placeholder{color:color-mix(in srgb,var(--gold) 55%,var(--muted))}
+.find input::-webkit-search-cancel-button{filter:grayscale(1) brightness(1.6); cursor:pointer}
+.fgo{flex:none; height:44px; padding:0 22px; border:0; border-radius:999px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; font-weight:800; font-size:16px; color:#2a1c02;
+  background:var(--shine); background-size:220% 100%; animation:shine 3s linear infinite; box-shadow:0 0 0 1px #fff3c4 inset, 0 6px 18px rgba(216,169,74,.45); transition:transform .15s, filter .15s}
+.fgo:hover{transform:translateY(-2px); filter:brightness(1.1)} .fgo:active{transform:scale(.96)}
 .ib{flex:none; width:42px; height:42px; border-radius:13px; border:1px solid var(--line); background:var(--chip); font-size:18px; cursor:pointer; display:grid; place-items:center; transition:.18s}
 .ib:hover{border-color:var(--gold); transform:translateY(-2px)}
 
@@ -207,14 +217,18 @@ footer .dis{color:var(--muted); font-size:13.5px}
   .vids{gap:9px} .vids>.v,.vids>.more{flex-basis:158px} .arw{width:34px; height:34px; font-size:21px} .arw[data-arw="-1"]{right:-6px} .arw[data-arw="1"]{left:-6px}
   .counter{padding:4px 10px 4px 8px; gap:5px} .counter .num{font-size:15px} .counter .lb{display:none}
 }
-@media (max-width:520px){ .bar-in{gap:6px; padding:0 8px} .brand img{width:30px; height:30px} .brand b{font-size:17px} .ib{width:36px; height:36px; font-size:16px; border-radius:11px} .counter{padding:3px 8px} .counter .eye{font-size:13px} .counter .num{font-size:13.5px} .find{display:none} .find.open{display:flex; position:absolute; top:var(--bar); inset-inline:0; max-width:none; margin:0; border-radius:0; background:var(--bg); z-index:31} #findBtn{display:grid!important} .bar-in{justify-content:space-between} }
+@media (max-width:520px){ .bar-in{gap:6px; padding:0 8px} .brand img{width:30px; height:30px} .brand b{font-size:17px} .ib{width:36px; height:36px; font-size:16px; border-radius:11px} .counter{padding:3px 8px} .counter .eye{font-size:13px} .counter .num{font-size:13.5px} .find{display:none} .find.open{display:flex; position:absolute; top:var(--bar); inset-inline:0; max-width:none; margin:0; padding:8px 10px; background:var(--bg); border-bottom:1px solid var(--line); z-index:31} #findBtn{display:grid!important} .bar-in{justify-content:space-between} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
 </style>
 </head>
 <body>
 <div class="bar"><div class="bar-in">
   <button class="brand" id="home" aria-label="الرئيسية"><img src="icon.svg" alt=""><b class="gold">المسك المختوم</b></button>
-  <form class="find" id="find"><input id="q" type="search" placeholder="ابحث في المقاطع: قارئ، سورة، درس، خطبة..." autocomplete="off" aria-label="بحث"></form>
+  <form class="find" id="find" role="search">
+    <label class="fbox"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+      <input id="q" type="search" placeholder="ابحث عن قارئ، سورة، درس، خطبة…" autocomplete="off" aria-label="بحث"></label>
+    <button class="fgo" type="submit">بحث</button>
+  </form>
   <div class="counter" id="counter" hidden title="عدد زوار الموقع"><span class="eye">👁</span><span class="num" id="cnum">0</span><span class="lb">زائر</span></div>
   <button class="ib" id="findBtn" style="display:none" aria-label="بحث">🔍</button>
   <button class="ib" id="favBtn" title="المفضلة" aria-label="المفضلة">★</button>
