@@ -493,7 +493,7 @@ tb.onclick = () => setTheme(root.dataset.theme === "light" ? "dark" : "light");
 
 /* البداية */
 sides(); panel();
-fetch("data.json").then(r => r.json()).then(d => { DATA = d; route(); }).catch(() => { $("panel").innerHTML = '<div class="empty">تعذّر تحميل فهرس المقاطع. أعد تحميل الصفحة.</div>'; });
+fetch("data.json?v=20261010b").then(r => r.json()).then(d => { DATA = d; route(); }).catch(() => { $("panel").innerHTML = '<div class="empty">تعذّر تحميل فهرس المقاطع. أعد تحميل الصفحة.</div>'; });
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 </script>
 </body>
