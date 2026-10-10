@@ -119,6 +119,8 @@ button,input,select{font-family:inherit; color:inherit}
 .arw{position:absolute; top:50%; transform:translateY(-50%); z-index:4; width:40px; height:40px; border-radius:50%; border:0; cursor:pointer; font-size:24px; font-weight:800; line-height:1; color:#2a1c02;
   background:var(--shine); background-size:220% 100%; animation:shine 4s linear infinite; box-shadow:0 6px 18px rgba(0,0,0,.5), 0 0 0 2px rgba(255,243,196,.6) inset; display:grid; place-items:center; padding:0 0 3px}
 .arw:hover{filter:brightness(1.12)} .arw[data-arw="-1"]{right:-12px} .arw[data-arw="1"]{left:-12px}
+.crow{position:relative}
+.arw.sm{display:none; width:32px; height:32px; font-size:20px} .arw.sm[data-carw="-1"]{right:-4px} .arw.sm[data-carw="1"]{left:-4px}
 .more{display:grid; place-items:center; text-align:center; border:1px dashed var(--line); border-radius:13px; color:var(--muted); font-size:13.5px; font-weight:700; padding:8px; min-height:72px}
 .more a{color:var(--gold)} .more .sp{width:22px; height:22px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--gold); animation:spin .8s linear infinite; margin:0 auto 4px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -200,6 +202,7 @@ footer .dis{color:var(--muted); font-size:13.5px}
 
 @media (min-width:981px){
   .vids>.v,.vids>.more{flex-basis:285px}
+  .arw.sm{display:grid} .crow .chips{padding-inline:36px; scroll-behavior:smooth}
   .chips:has(.head){flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding-bottom:2px} .chips:has(.head)::-webkit-scrollbar{display:none} .chips:has(.head)>*{flex:none}
   .v{flex-direction:row; align-items:stretch; border-radius:13px}
   .v .th{flex:none; width:128px}
@@ -524,7 +527,7 @@ function panelDraw(){
       <div class="sub">مختارات</div>`;
   }
   if (cat.kids) h += `<div class="khead"><span>🌈</span><div><b>ركن الأطفال</b><small>كرتون، قصص، أناشيد، تعليم وبناء شخصية</small></div><span>🎈</span></div><div class="kgrid">${cat.items.map((it, i) => `<button class="ktile ${view.item === i ? "on" : ""}" style="--a:${it.a};--b:${it.b}" data-item="${i}"><span>${it.ic}</span><b>${esc(it.t)}</b></button>`).join("")}</div>`;
-  else h += `<div class="chips">${cat.quran ? "" : head}${cat.items.map((it, i) => `<button class="chip ${view.item === i && !view.rec ? "on" : ""}" ${st} data-item="${i}">${esc(it.t)}</button>`).join("")}</div>`;
+  else h += `${cat.quran ? "" : '<div class="crow"><button class="arw sm" data-carw="-1" aria-label="السابق" title="السابق">›</button>'}<div class="chips" ${cat.quran ? "" : 'id="chipsRow"'}>${cat.quran ? "" : head}${cat.items.map((it, i) => `<button class="chip ${view.item === i && !view.rec ? "on" : ""}" ${st} data-item="${i}">${esc(it.t)}</button>`).join("")}</div>${cat.quran ? "" : '<button class="arw sm" data-carw="1" aria-label="التالي" title="التالي">‹</button></div>'}`;
   if (view.rec){
     const R = DATA.rec[view.rec] || {v:[]};
     const s = store.get("misk-surah", ""), sn = s === "" ? "" : SURAHS[+s];
@@ -652,6 +655,7 @@ document.addEventListener("click", e => {
   const f = e.target.closest("[data-fav]");
   if (f){ e.stopPropagation(); toggleFav(view.list[+f.dataset.fav]); if (view.cat === "@fav") panel(); else f.classList.toggle("on"); nowBar(); return; }
   const ar = e.target.closest("[data-arw]"); if (ar){ const el = $("vids"), d = +ar.dataset.arw; if (el){ el.scrollBy({left: -d * el.clientWidth * 0.85, behavior:"smooth"}); if (d > 0) setTimeout(nearEnd, 350); } return; }
+  const ca = e.target.closest("[data-carw]"); if (ca){ const el = $("chipsRow"); if (el) el.scrollBy({left: -(+ca.dataset.carw) * el.clientWidth * 0.7, behavior:"smooth"}); return; }
   const it = e.target.closest("[data-item]"); if (it){ openItem(+it.dataset.item); return; }
   const r = e.target.closest("[data-rec]"); if (r){ openRec(r.dataset.rec); return; }
   if (e.target.closest("[data-pl]")){ playRec(); return; }
