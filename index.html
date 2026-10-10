@@ -62,8 +62,8 @@ button,input,select{font-family:inherit; color:inherit}
 .cat.on{box-shadow:0 0 0 3px var(--gold), 0 10px 22px color-mix(in srgb,var(--b) 60%,transparent)}
 
 .mid{min-width:0}
-.screenBox{position:sticky; top:var(--bar); z-index:20; background:var(--bg); padding:12px 0 8px; margin-top:-14px}
-.screen{position:relative; flex:0 1 calc((100vh - var(--bar) - 280px) * 16 / 9); min-width:0; aspect-ratio:16/9; background:#000; border-radius:20px; overflow:hidden;
+.screenBox{position:sticky; top:var(--bar); z-index:20; background:var(--bg); padding:10px 0 8px; margin-top:-14px}
+.screen{position:relative; flex:0 1 calc((100vh - var(--bar) - 196px) * 16 / 9); min-width:0; aspect-ratio:16/9; background:#000; border-radius:20px; overflow:hidden;
   border:2px solid color-mix(in srgb,var(--gold) 70%,transparent); box-shadow:0 0 0 6px rgba(231,195,106,.09), 0 22px 50px rgba(0,0,0,.55)}
 .screen iframe,.screen #yt{position:absolute; inset:0; width:100%; height:100%; border:0}
 #unmute{position:absolute; top:12px; inset-inline:0; margin:auto; width:max-content; z-index:5; border:0; cursor:pointer; border-radius:999px; padding:9px 18px; font-weight:800; font-size:15px; color:#2a1c02; background:var(--shine); background-size:220% 100%; animation:shine 3s linear infinite; box-shadow:0 6px 20px rgba(0,0,0,.5)}
@@ -73,22 +73,22 @@ button,input,select{font-family:inherit; color:inherit}
 .poster h1{font-family:"Amiri",serif; font-size:clamp(30px,4.6vw,58px); margin:0; line-height:1.3; white-space:nowrap}
 .poster p{margin:6px 0 0; color:#b9cdc3; font-size:clamp(14px,1.6vw,18px)}
 .srow{display:flex; align-items:center; justify-content:center; gap:14px}
-.srow .t{flex:1 1 0; min-width:110px; max-width:250px; font-weight:800; font-size:17px; line-height:1.5; display:-webkit-box; -webkit-line-clamp:6; -webkit-box-orient:vertical; overflow:hidden}
-.ctl{flex:1 1 0; min-width:110px; max-width:250px; display:flex; flex-direction:column; align-items:flex-start; gap:9px}
+.srow .t{flex:1 1 0; min-width:90px; max-width:250px; font-weight:800; font-size:17px; line-height:1.5; display:-webkit-box; -webkit-line-clamp:6; -webkit-box-orient:vertical; overflow:hidden}
+.ctl{flex:1 1 0; min-width:48px; max-width:250px; display:flex; flex-direction:column; align-items:flex-start; gap:9px}
 .srow .t small{display:block; color:var(--muted); font-weight:500; font-size:13.5px; margin-top:4px}
 .nb{flex:none; height:40px; min-width:44px; padding:0 10px; border-radius:11px; border:1px solid var(--line); background:var(--chip); cursor:pointer; font-size:18px; font-weight:700; display:grid; place-items:center}
 .nb:hover{border-color:var(--gold)} .nb.on{color:var(--gold)} .nb[disabled]{opacity:.4; cursor:default}
 
 /* اللوحة تحت الشاشة */
-#panel{padding:6px 0 30px}
+#panel{padding:2px 0 30px}
 .head{display:inline-flex; align-items:center; gap:9px; border-radius:999px; padding:5px 18px 5px 16px; color:#fff; background:linear-gradient(140deg,var(--a),var(--b)); max-width:100%}
 .head>div{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
 .head .ic{font-size:20px} .head h2{margin:0; font-size:17px; font-weight:800} .head p{margin:0; opacity:.93; font-size:13px}
-.chips{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px}
+.chips{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:8px 0 4px}
 .chip{border:1px solid var(--line); background:var(--chip); border-radius:999px; padding:7px 15px; cursor:pointer; font-weight:700; font-size:14.5px; transition:.15s}
 .chip:hover{border-color:var(--a,var(--gold))}
 .chip.on{background:linear-gradient(140deg,var(--a,#d8a94a),var(--b,#b8892f)); color:#fff; border-color:transparent}
-.sub{font-size:16px; font-weight:800; margin:16px 2px 4px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.sub{font-size:15px; font-weight:800; margin:6px 2px 2px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 .sub small{color:var(--muted); font-weight:500; font-size:13.5px}
 .sub a{margin-inline-start:auto; font-size:13.5px; color:var(--gold); font-weight:700}
 .pick{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:10px 14px}
@@ -98,7 +98,7 @@ button,input,select{font-family:inherit; color:inherit}
 .note{color:var(--muted); font-size:14px; margin:8px 4px 0}
 .note a{color:var(--gold); font-weight:700}
 
-.vids{display:grid; gap:12px; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); margin-top:10px}
+.vids{display:grid; gap:10px; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); margin-top:6px}
 .v{position:relative; background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; cursor:pointer; text-align:right; padding:0; display:flex; flex-direction:column; transition:.18s}
 .v:hover{transform:translateY(-3px); border-color:var(--gold); box-shadow:var(--shadow)}
 .v.on{border-color:var(--gold); box-shadow:0 0 0 2px var(--gold)}
@@ -137,6 +137,15 @@ footer .dis{color:var(--muted); font-size:13.5px}
 .credit .nm{font-size:23px; display:block}
 .credit span{display:block}
 
+@media (min-width:981px){
+  .vids{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+  .chips:has(.head){flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding-bottom:2px} .chips:has(.head)::-webkit-scrollbar{display:none} .chips:has(.head)>*{flex:none}
+  .v{flex-direction:row; align-items:stretch; border-radius:13px}
+  .v .th{flex:none; width:128px}
+  .v .tx{flex:1; min-width:0; padding:6px 9px 6px; padding-inline-end:34px}
+  .v .tx b{font-size:13.5px; line-height:1.4}
+  .star{width:30px; height:30px; bottom:3px; left:3px; font-size:16px}
+}
 @media (max-width:980px){
   .stage{display:flex; flex-direction:column; gap:10px; padding:0 10px}
   .mid{display:contents}
@@ -337,7 +346,8 @@ function panel(){
     p.innerHTML = `<div class="empty" style="font-size:16px">اختر قسماً من الأزرار الملونة، ثم اختر مقطعاً. المقطع يُعرض في الشاشة أعلاه، والشاشة تبقى ثابتة أثناء التمرير.</div>`;
     return;
   }
-  let h = `<div class="head" style="--a:${cat.a};--b:${cat.b}"><span class="ic" aria-hidden="true">${cat.ic}</span><div><h2>${esc(cat.t)}</h2><p>${esc(cat.d)}</p></div></div>`;
+  const head = `<div class="head" style="--a:${cat.a};--b:${cat.b}"><span class="ic" aria-hidden="true">${cat.ic}</span><div><h2>${esc(cat.t)}</h2><p>${esc(cat.d)}</p></div></div>`;
+  let h = cat.quran ? head : "";
   const st = `style="--a:${cat.a};--b:${cat.b}"`;
   if (cat.quran){
     const s = store.get("misk-surah", "");
@@ -346,7 +356,7 @@ function panel(){
       <div class="chips">${RECITERS.map(r => `<button class="chip ${view.rec === r ? "on" : ""}" ${st} data-rec="${esc(r)}">${esc(r)}</button>`).join("")}</div>
       <div class="sub">مختارات</div>`;
   }
-  h += `<div class="chips">${cat.items.map((it, i) => `<button class="chip ${view.item === i && !view.rec ? "on" : ""}" ${st} data-item="${i}">${esc(it.t)}</button>`).join("")}</div>`;
+  h += `<div class="chips">${cat.quran ? "" : head}${cat.items.map((it, i) => `<button class="chip ${view.item === i && !view.rec ? "on" : ""}" ${st} data-item="${i}">${esc(it.t)}</button>`).join("")}</div>`;
   if (view.rec){
     const R = DATA.rec[view.rec] || {v:[]};
     const s = store.get("misk-surah", ""), sn = s === "" ? "" : SURAHS[+s];
