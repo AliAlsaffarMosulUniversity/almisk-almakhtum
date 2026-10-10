@@ -98,7 +98,16 @@ button,input,select{font-family:inherit; color:inherit}
 .note{color:var(--muted); font-size:14px; margin:8px 4px 0}
 .note a{color:var(--gold); font-weight:700}
 
-.vids{display:grid; gap:10px; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); margin-top:6px}
+.car{position:relative; margin-top:6px}
+.vids{display:flex; gap:10px; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x proximity; scrollbar-width:none; padding:3px 2px 6px; overscroll-behavior-x:contain}
+.vids::-webkit-scrollbar{display:none}
+.vids>.v,.vids>.more{flex:0 0 200px; scroll-snap-align:start}
+.arw{position:absolute; top:50%; transform:translateY(-50%); z-index:4; width:40px; height:40px; border-radius:50%; border:0; cursor:pointer; font-size:24px; font-weight:800; line-height:1; color:#2a1c02;
+  background:var(--shine); background-size:220% 100%; animation:shine 4s linear infinite; box-shadow:0 6px 18px rgba(0,0,0,.5), 0 0 0 2px rgba(255,243,196,.6) inset; display:grid; place-items:center; padding:0 0 3px}
+.arw:hover{filter:brightness(1.12)} .arw[data-arw="-1"]{right:-12px} .arw[data-arw="1"]{left:-12px}
+.more{display:grid; place-items:center; text-align:center; border:1px dashed var(--line); border-radius:13px; color:var(--muted); font-size:13.5px; font-weight:700; padding:8px; min-height:72px}
+.more a{color:var(--gold)} .more .sp{width:22px; height:22px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--gold); animation:spin .8s linear infinite; margin:0 auto 4px}
+@keyframes spin{to{transform:rotate(360deg)}}
 .v{position:relative; background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; cursor:pointer; text-align:right; padding:0; display:flex; flex-direction:column; transition:.18s}
 .v:hover{transform:translateY(-3px); border-color:var(--gold); box-shadow:var(--shadow)}
 .v.on{border-color:var(--gold); box-shadow:0 0 0 2px var(--gold)}
@@ -138,7 +147,7 @@ footer .dis{color:var(--muted); font-size:13.5px}
 .credit span{display:block}
 
 @media (min-width:981px){
-  .vids{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+  .vids>.v,.vids>.more{flex-basis:285px}
   .chips:has(.head){flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding-bottom:2px} .chips:has(.head)::-webkit-scrollbar{display:none} .chips:has(.head)>*{flex:none}
   .v{flex-direction:row; align-items:stretch; border-radius:13px}
   .v .th{flex:none; width:128px}
@@ -159,7 +168,7 @@ footer .dis{color:var(--muted); font-size:13.5px}
   .cat{scroll-snap-align:start; padding:9px 13px} .cat:hover{transform:none} .cat b{white-space:nowrap; font-size:14.5px} .cat .ic{font-size:21px}
   #panel{order:4; width:100%; min-width:0}
   .brand b{font-size:20px}
-  .vids{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:9px}
+  .vids{gap:9px} .vids>.v,.vids>.more{flex-basis:158px} .arw{width:34px; height:34px; font-size:21px} .arw[data-arw="-1"]{right:-6px} .arw[data-arw="1"]{left:-6px}
   .counter{padding:4px 10px 4px 8px; gap:5px} .counter .num{font-size:15px} .counter .lb{display:none}
 }
 @media (max-width:520px){ .bar-in{gap:6px; padding:0 8px} .brand img{width:30px; height:30px} .brand b{font-size:17px} .ib{width:36px; height:36px; font-size:16px; border-radius:11px} .counter{padding:3px 8px} .counter .eye{font-size:13px} .counter .num{font-size:13.5px} .find{display:none} .find.open{display:flex; position:absolute; top:var(--bar); inset-inline:0; max-width:none; margin:0; border-radius:0; background:var(--bg); z-index:31} #findBtn{display:grid!important} .bar-in{justify-content:space-between} }
@@ -318,17 +327,93 @@ function sides(){
 }
 
 /* ================== اللوحة ================== */
-function vidsHTML(list){
-  if (!list.length) return `<div class="empty">لا توجد مقاطع محفوظة لهذا العنوان حالياً.</div>`;
-  return `<div class="vids">${list.map((v, i) => `
-    <div class="v ${cur.type === "vids" && cur.list[cur.idx] && cur.list[cur.idx][0] === v[0] ? "on" : ""}" data-play="${i}" data-id="${v[0]}" role="button" tabindex="0">
+function cardHTML(v, i){
+  return `<div class="v ${cur.type === "vids" && cur.list[cur.idx] && cur.list[cur.idx][0] === v[0] ? "on" : ""}" data-play="${i}" data-id="${v[0]}" role="button" tabindex="0">
       <div class="th"><img loading="lazy" src="https://i.ytimg.com/vi/${v[0]}/mqdefault.jpg" alt="">${v[3] ? `<span>${esc(v[3])}</span>` : ""}<i>▶</i></div>
       <div class="tx"><b>${esc(v[1])}</b><small>${esc(v[2])}</small></div>
       <button class="star ${isFav(v[0]) ? "on" : ""}" data-fav="${i}" aria-label="المفضلة" title="المفضلة">★</button>
-    </div>`).join("")}</div>`;
+    </div>`;
+}
+function vidsHTML(list){
+  if (!list.length && !liveQ()) return `<div class="empty">لا توجد مقاطع هنا حالياً.</div>`;
+  return `<div class="car"><button class="arw" data-arw="-1" aria-label="السابق" title="السابق">›</button>
+    <div class="vids" id="vids">${list.map(cardHTML).join("")}</div>
+    <button class="arw" data-arw="1" aria-label="المزيد" title="المزيد من يوتيوب">‹</button></div>`;
 }
 
-function panel(){
+/* ================== جلب المزيد من يوتيوب مباشرة ================== */
+const YT_API_KEY = "";   // اختياري: مفتاح YouTube Data API. إن تُرك فارغاً تُستعمل المصادر المفتوحة أدناه.
+const PIPED = ["https://api.piped.private.coffee"];
+const INVID = ["https://invidious.f5.si"];
+const LIVE = {};
+const hms = s => { s = +s; if (!(s > 0)) return ""; const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = Math.floor(s % 60); return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(x).padStart(2, "0"); };
+const cut = (s, n) => { s = String(s || "").replace(/\s+/g, " ").trim(); return s.length > n ? s.slice(0, n - 1) + "…" : s; };
+const unent = s => { const t = document.createElement("textarea"); t.innerHTML = s || ""; return t.value; };
+async function getJSON(u){ const c = new AbortController(), tm = setTimeout(() => c.abort(), 9000); try { const r = await fetch(u, {signal:c.signal}); if (!r.ok) throw new Error(r.status); return await r.json(); } finally { clearTimeout(tm); } }
+function liveQ(){
+  if (view.cat === "@search") return view.label;
+  if (view.rec) return "تلاوة " + view.rec;
+  const cat = CATS.find(c => c.id === view.cat);
+  return cat && view.item != null ? cat.items[view.item].q : null;
+}
+const PROVIDERS = [
+  async (q, st) => {            // يوتيوب الرسمي (إن وُجد مفتاح)
+    if (!YT_API_KEY) throw 0;
+    const j = await getJSON("https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoEmbeddable=true&maxResults=25&q=" + encodeURIComponent(q) + "&key=" + YT_API_KEY + (st.tok ? "&pageToken=" + st.tok : ""));
+    st.tok = j.nextPageToken || null; if (!st.tok) st.end = true;
+    return (j.items || []).map(x => [x.id.videoId, cut(unent(x.snippet.title), 72), cut(unent(x.snippet.channelTitle), 28), ""]);
+  },
+  async (q, st) => {
+    let last;
+    for (const b of PIPED){ try {
+      const j = await getJSON(b + (st.tok ? "/nextpage/search?nextpage=" + encodeURIComponent(st.tok) + "&" : "/search?") + "q=" + encodeURIComponent(q) + "&filter=videos");
+      st.tok = j.nextpage || null; if (!st.tok) st.end = true;
+      return (j.items || []).filter(x => x.url && /[?&]v=/.test(x.url)).map(x => [x.url.split("v=")[1].slice(0, 11), cut(x.title, 72), cut(x.uploaderName, 28), hms(x.duration)]);
+    } catch(e){ last = e; } }
+    throw last || 0;
+  },
+  async (q, st) => {
+    st.page = (st.page || 0) + 1; let last;
+    for (const b of INVID){ try {
+      const j = await getJSON(b + "/api/v1/search?type=video&page=" + st.page + "&q=" + encodeURIComponent(q));
+      if (!Array.isArray(j)) throw new Error("bad"); if (!j.length) st.end = true;
+      return j.filter(x => x.videoId).map(x => [x.videoId, cut(x.title, 72), cut(x.author, 28), hms(x.lengthSeconds)]);
+    } catch(e){ last = e; } }
+    st.page--; throw last || 0;
+  }
+];
+async function liveMore(q){
+  const L = LIVE[q] || (LIVE[q] = {p:0, st:{}, done:false});
+  while (L.p < PROVIDERS.length){
+    try { const rows = await PROVIDERS[L.p](q, L.st); if (L.st.end) L.done = true; return rows; }
+    catch(e){ L.p++; L.st = {}; }
+  }
+  L.failed = true; throw new Error("no provider");
+}
+let moreBusy = false;
+async function loadMore(){
+  const q = liveQ(), el = $("vids"); if (!q || !el || moreBusy) return;
+  const L = LIVE[q]; if (L && (L.done || L.failed)) return endCard(q, L);
+  moreBusy = true;
+  el.insertAdjacentHTML("beforeend", `<div class="more" id="moreL"><div><div class="sp"></div>جارٍ جلب المزيد من يوتيوب…</div></div>`);
+  const list = view.list; let rows = [], ok = true;
+  try { for (let k = 0; k < 3 && !rows.length; k++){ const r = await liveMore(q); const have = new Set(list.map(v => v[0])); rows = r.filter(v => v[0] && !have.has(v[0]) && have.add(v[0])); if ((LIVE[q] || {}).done) break; } } catch(e){ ok = false; }
+  moreBusy = false;
+  const ld = $("moreL"); if (ld) ld.remove();
+  if (liveQ() !== q || view.list !== list || !$("vids")) return;        // المستخدم انتقل إلى عنوان آخر
+  const start = list.length; rows.forEach(v => list.push(v));
+  $("vids").insertAdjacentHTML("beforeend", rows.map((v, k) => cardHTML(v, start + k)).join(""));
+  if (!ok || !rows.length) endCard(q, LIVE[q] || {failed:true});
+}
+function endCard(q, L){
+  const el = $("vids"); if (!el || $("moreE")) return;
+  el.insertAdjacentHTML("beforeend", `<div class="more" id="moreE"><div>${L.failed ? "تعذّر جلب المزيد الآن." : "انتهت النتائج."}<br><a href="${ytSearch(q)}" target="_blank" rel="noopener">تابع في يوتيوب ↗</a></div></div>`);
+}
+function nearEnd(){ const el = $("vids"); if (!el) return; if (el.scrollWidth - el.clientWidth - Math.abs(el.scrollLeft) < el.clientWidth * 1.2) loadMore(); }
+function wireVids(){ const el = $("vids"); if (!el) return; el.addEventListener("scroll", nearEnd, {passive:true}); setTimeout(nearEnd, 60); }
+
+function panel(){ panelDraw(); wireVids(); }
+function panelDraw(){
   const p = $("panel");
   const cat = CATS.find(c => c.id === view.cat);
   if (view.cat === "@fav"){
@@ -339,7 +424,7 @@ function panel(){
   }
   if (view.cat === "@search"){
     p.innerHTML = `<div class="head" style="--a:#475569;--b:#1e293b"><span class="ic">🔍</span><div><h2>نتائج البحث</h2><p>${esc(view.label)}</p></div></div>
-      <div class="sub"><small>${view.list.length} مقطعاً من فهرس التطبيق</small><a href="${ytSearch(view.label)}" target="_blank" rel="noopener">ابحث في يوتيوب ↗</a></div>` + vidsHTML(view.list);
+      <div class="sub"><small>اسحب أو استعمل الأسهم لجلب المزيد من يوتيوب</small><a href="${ytSearch(view.label)}" target="_blank" rel="noopener">ابحث في يوتيوب ↗</a></div>` + vidsHTML(view.list);
     return;
   }
   if (!cat){
@@ -365,7 +450,7 @@ function panel(){
     h += `<div class="sub">تلاوات ${esc(view.rec)}<a href="${ytSearch("تلاوة " + view.rec)}" target="_blank" rel="noopener">المزيد في يوتيوب ↗</a></div>` + vidsHTML(view.list);
   } else if (view.item != null){
     const it = cat.items[view.item];
-    h += `<div class="sub">${esc(it.t)} <small>${view.list.length} مقاطع</small><a href="${ytSearch(it.q)}" target="_blank" rel="noopener">المزيد في يوتيوب ↗</a></div>` + vidsHTML(view.list);
+    h += `<div class="sub">${esc(it.t)} <small>الأسهم تجلب المزيد من يوتيوب</small><a href="${ytSearch(it.q)}" target="_blank" rel="noopener">المزيد في يوتيوب ↗</a></div>` + vidsHTML(view.list);
   }
   p.innerHTML = h;
 }
@@ -411,7 +496,7 @@ function ensure(cb){
   }
 }
 function cue(list, i){ cur = {type:"vids", list:list.slice(), idx:i, pl:null, title:""}; ensure(() => player.cuePlaylist(cur.list.map(v => v[0]), i)); nowBar(); mark(); }
-function play(list, i){ errRun = 0; cur = {type:"vids", list:list.slice(), idx:i, pl:null, title:""}; ensure(() => player.loadPlaylist(cur.list.map(v => v[0]), i)); nowBar(); mark(); }
+function play(list, i){ errRun = 0; const s = Math.max(0, i - 20); cur = {type:"vids", list:list.slice(s, s + 150), idx:i - s, pl:null, title:""}; i = cur.idx; ensure(() => player.loadPlaylist(cur.list.map(v => v[0]), i)); nowBar(); mark(); }
 let autoDone = false;
 function autoStart(){
   if (autoDone || !view.list.length) return; autoDone = true;
@@ -473,7 +558,7 @@ function search(q){
   const add = (v, extra) => { if (seen.has(v[0])) return; const hay = norm(v[1] + " " + v[2] + " " + extra); if (words.every(w => hay.includes(w))){ seen.add(v[0]); out.push(v); } };
   for (const k in DATA.items) DATA.items[k].forEach(v => add(v, k));
   for (const r in DATA.rec) (DATA.rec[r].v || []).forEach(v => add(v, r));
-  view = {cat:"@search", item:null, rec:null, list:out.slice(0, 80), label:q};
+  view = {cat:"@search", item:null, rec:null, list:out.slice(0, 40), label:q};
   sides(); panel();
 }
 
@@ -482,6 +567,7 @@ document.addEventListener("click", e => {
   const c = e.target.closest("[data-cat]"); if (c){ location.hash = "#/" + c.dataset.cat; if (view.cat === c.dataset.cat) openCat(c.dataset.cat); return; }
   const f = e.target.closest("[data-fav]");
   if (f){ e.stopPropagation(); toggleFav(view.list[+f.dataset.fav]); if (view.cat === "@fav") panel(); else f.classList.toggle("on"); nowBar(); return; }
+  const ar = e.target.closest("[data-arw]"); if (ar){ const el = $("vids"), d = +ar.dataset.arw; if (el){ el.scrollBy({left: -d * el.clientWidth * 0.85, behavior:"smooth"}); if (d > 0) setTimeout(nearEnd, 350); } return; }
   const it = e.target.closest("[data-item]"); if (it){ openItem(+it.dataset.item); return; }
   const r = e.target.closest("[data-rec]"); if (r){ openRec(r.dataset.rec); return; }
   if (e.target.closest("[data-pl]")){ playRec(); return; }
