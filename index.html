@@ -6,7 +6,7 @@
 <title>المسك المختوم — نافذتك على المحتوى الإسلامي في يوتيوب</title>
 <meta name="description" content="المسك المختوم: شاشة عرض واحدة للمحتوى الإسلامي في يوتيوب — القرآن الكريم، التفسير، الحديث، الخطب، الدعوة، السيرة، الأذكار، وركن الأطفال.">
 <meta name="theme-color" content="#f5f1e6">
-<script>(function(){var L="ar";try{L=JSON.parse(localStorage.getItem("misk-lang")||'"ar"')}catch(e){} if(L!=="en"&&L!=="de")L="ar"; window.MISK_LANG=L; if(L!=="ar"){var d=document.documentElement;d.lang=L;d.dir="ltr";}})();</script>
+<script>(function(){var L="ar";try{L=JSON.parse(localStorage.getItem("misk-lang")||'"ar"')}catch(e){} try{var q=new URLSearchParams(location.search).get("lang"); if(q==="de"||q==="en"||q==="ar"){L=q; localStorage.setItem("misk-lang",JSON.stringify(q));}}catch(e){} if(L!=="en"&&L!=="de")L="ar"; window.MISK_LANG=L; if(L!=="ar"){var d=document.documentElement;d.lang=L;d.dir="ltr";}})();</script>
 <script src="i18n.js"></script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -736,7 +736,7 @@ document.addEventListener("change", e => { if (e.target.id === "surah"){ store.s
 $("prev").onclick = () => player && ready && player.previousVideo();
 $("next").onclick = () => player && ready && player.nextVideo();
 $("nowFav").onclick = () => { if (cur.type === "vids"){ toggleFav(cur.list[cur.idx]); nowBar(); panel(); } };
-document.querySelectorAll(".lg").forEach(b => { b.classList.toggle("on", b.dataset.lang === LANG); b.onclick = () => { if (b.dataset.lang === LANG) return; store.set("misk-lang", b.dataset.lang); location.reload(); }; });
+document.querySelectorAll(".lg").forEach(b => { b.classList.toggle("on", b.dataset.lang === LANG); b.onclick = () => { if (b.dataset.lang === LANG) return; store.set("misk-lang", b.dataset.lang); const u = new URL(location.href); u.searchParams.delete("lang"); location.href = u.toString(); if (u.toString() === location.href) location.reload(); }; });
 $("favBtn").onclick = () => { location.hash = "#/@fav"; };
 $("home").onclick = () => { location.hash = "#/"; scrollTo({top:0, behavior:"smooth"}); };
 $("find").onsubmit = e => { e.preventDefault(); const q = $("q").value.trim(); if (q){ history.replaceState(null, "", "#/"); search(q); $("find").classList.remove("open"); } };
