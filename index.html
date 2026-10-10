@@ -51,30 +51,30 @@ button,input,select{font-family:inherit; color:inherit}
 .ib:hover{border-color:var(--gold); transform:translateY(-2px)}
 
 /* المسرح: أقسام يمين + شاشة + أقسام يسار */
-.stage{max-width:1560px; margin:0 auto; padding:14px 14px 0; display:grid; grid-template-columns:210px minmax(0,1fr) 210px; gap:16px; align-items:start}
-.side{position:sticky; top:calc(var(--bar) + 14px); max-height:calc(100vh - var(--bar) - 28px); overflow-y:auto; display:flex; flex-direction:column; gap:9px; padding:2px; scrollbar-width:thin}
-.cat{position:relative; overflow:hidden; flex:none; border:0; cursor:pointer; text-align:right; color:#fff; border-radius:16px; padding:11px 12px; display:flex; align-items:center; gap:10px;
+.stage{max-width:1560px; margin:0 auto; padding:14px 14px 0; display:grid; grid-template-columns:176px minmax(0,1fr) 176px; gap:14px; align-items:start}
+.side{position:sticky; top:calc(var(--bar) + 14px); max-height:calc(100vh - var(--bar) - 28px); overflow-y:auto; display:flex; flex-direction:column; gap:6px; padding:2px; scrollbar-width:thin}
+.cat{position:relative; overflow:hidden; flex:none; border:0; cursor:pointer; text-align:right; color:#fff; border-radius:12px; padding:6px 10px; display:flex; align-items:center; gap:8px;
   background:linear-gradient(140deg,var(--a),var(--b)); box-shadow:0 6px 16px color-mix(in srgb,var(--b) 40%,transparent); transition:transform .18s, filter .18s, box-shadow .18s}
 .cat::after{content:""; position:absolute; inset:auto auto -34px -26px; width:90px; height:90px; border-radius:50%; background:rgba(255,255,255,.14)}
 .cat:hover{transform:translateX(-4px); filter:saturate(1.2) brightness(1.06)}
-.cat .ic{font-size:25px; flex:none; position:relative; z-index:1}
-.cat b{font-size:15.5px; font-weight:800; position:relative; z-index:1; line-height:1.3}
+.cat .ic{font-size:19px; flex:none; position:relative; z-index:1}
+.cat b{font-size:13.5px; font-weight:800; position:relative; z-index:1; line-height:1.3}
 .cat.on{box-shadow:0 0 0 3px var(--gold), 0 10px 22px color-mix(in srgb,var(--b) 60%,transparent)}
 
 .mid{min-width:0}
-.screenBox{position:sticky; top:var(--bar); z-index:20; background:var(--bg); padding:14px 0 10px; margin-top:-14px}
-.screen{position:relative; width:100%; max-width:calc((100vh - var(--bar) - 190px) * 16 / 9); min-width:min(100%,420px); margin:0 auto; aspect-ratio:16/9; background:#000; border-radius:20px; overflow:hidden;
+.screenBox{position:sticky; top:var(--bar); z-index:20; background:var(--bg); padding:12px 0 8px; margin-top:-14px}
+.screen{position:relative; width:100%; max-width:calc((100vh - var(--bar) - 340px) * 16 / 9); min-width:min(100%,380px); margin:0 auto; aspect-ratio:16/9; background:#000; border-radius:20px; overflow:hidden;
   border:2px solid color-mix(in srgb,var(--gold) 70%,transparent); box-shadow:0 0 0 6px rgba(231,195,106,.09), 0 22px 50px rgba(0,0,0,.55)}
 .screen iframe,.screen #yt{position:absolute; inset:0; width:100%; height:100%; border:0}
 .poster{position:absolute; inset:0; display:grid; place-content:center; text-align:center; padding:18px; color:#f3f7f4;
   background:radial-gradient(600px 300px at 50% 0,rgba(16,185,129,.35),transparent 70%),linear-gradient(160deg,#0b2a20,#04100c)}
 .poster .aya{font-family:"Amiri",serif; font-size:clamp(18px,3vw,28px); margin:0}
-.poster h1{font-family:"Amiri",serif; font-size:clamp(38px,7vw,84px); margin:0; line-height:1.3}
+.poster h1{font-family:"Amiri",serif; font-size:clamp(30px,4.6vw,58px); margin:0; line-height:1.3; white-space:nowrap}
 .poster p{margin:6px 0 0; color:#b9cdc3; font-size:clamp(14px,1.6vw,18px)}
-.now{display:flex; align-items:center; gap:8px; max-width:calc((100vh - var(--bar) - 190px) * 16 / 9); min-width:min(100%,420px); margin:10px auto 0}
+.now{display:flex; align-items:center; gap:7px; max-width:calc((100vh - var(--bar) - 340px) * 16 / 9); min-width:min(100%,380px); margin:7px auto 0}
 .now .t{flex:1; min-width:0; font-weight:700; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .now .t small{display:block; color:var(--muted); font-weight:500; font-size:13px; overflow:hidden; text-overflow:ellipsis}
-.nb{flex:none; height:40px; min-width:42px; padding:0 10px; border-radius:11px; border:1px solid var(--line); background:var(--chip); cursor:pointer; font-size:18px; font-weight:700; display:grid; place-items:center}
+.nb{flex:none; height:34px; min-width:38px; padding:0 10px; border-radius:11px; border:1px solid var(--line); background:var(--chip); cursor:pointer; font-size:18px; font-weight:700; display:grid; place-items:center}
 .nb:hover{border-color:var(--gold)} .nb.on{color:var(--gold)} .nb[disabled]{opacity:.4; cursor:default}
 
 /* اللوحة تحت الشاشة */
@@ -113,21 +113,21 @@ button,input,select{font-family:inherit; color:inherit}
 .plcard i{font-style:normal; width:40px; height:40px; border-radius:50%; background:var(--shine); color:#1b1404; display:grid; place-items:center; flex:none}
 .plcard small{display:block; color:var(--muted); font-weight:500; font-size:13px}
 .empty{color:var(--muted); background:var(--card); border:1px dashed var(--line); border-radius:16px; padding:16px; text-align:center; margin-top:12px}
-.toast{position:fixed; bottom:84px; inset-inline:0; margin:auto; width:max-content; max-width:88vw; background:#1b1404; color:#fff3c4; border:1px solid var(--gold); border-radius:14px; padding:10px 16px; z-index:60; font-weight:700; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:.25s}
+.toast{position:fixed; bottom:28px; inset-inline:0; margin:auto; width:max-content; max-width:88vw; background:#1b1404; color:#fff3c4; border:1px solid var(--gold); border-radius:14px; padding:10px 16px; z-index:60; font-weight:700; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:.25s}
 .toast.show{opacity:1}
 
 /* عدّاد الزوار */
-.counter{position:fixed; bottom:calc(14px + env(safe-area-inset-bottom)); left:14px; z-index:50; display:flex; align-items:center; gap:9px; padding:8px 15px 8px 12px; border-radius:999px; direction:rtl;
+.counter{position:relative; flex:none; display:flex; align-items:center; gap:7px; padding:5px 13px 5px 10px; border-radius:999px; direction:rtl;
   background:var(--shine); background-size:220% 100%; animation:shine 4s linear infinite; color:#2a1c02; font-weight:800;
-  box-shadow:0 0 0 1px #fff3c4 inset, 0 0 0 3px rgba(184,137,47,.45), 0 10px 26px rgba(216,169,74,.5)}
+  box-shadow:0 0 0 1px #fff3c4 inset, 0 0 0 2px rgba(184,137,47,.45), 0 4px 16px rgba(216,169,74,.45)}
 .counter::before{content:""; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(180deg,rgba(255,255,255,.55),transparent 45%); pointer-events:none}
-.counter .eye{font-size:19px; filter:drop-shadow(0 1px 0 rgba(255,255,255,.6))}
-.counter .num{font-size:20px; letter-spacing:.5px; direction:ltr; font-variant-numeric:tabular-nums; text-shadow:0 1px 0 rgba(255,255,255,.55)}
+.counter .eye{font-size:16px; filter:drop-shadow(0 1px 0 rgba(255,255,255,.6))}
+.counter .num{font-size:17px; letter-spacing:.5px; direction:ltr; font-variant-numeric:tabular-nums; text-shadow:0 1px 0 rgba(255,255,255,.55)}
 .counter .lb{font-size:12.5px; font-weight:700; opacity:.85}
 .counter[hidden]{display:none}
 
 /* التذييل */
-footer{text-align:center; padding:26px 16px 96px; border-top:1px solid var(--line); margin-top:10px}
+footer{text-align:center; padding:26px 16px 40px; border-top:1px solid var(--line); margin-top:10px}
 footer .aya{font-family:"Amiri",serif; font-size:22px; display:block; margin-bottom:6px; color:var(--gold)}
 footer .dis{color:var(--muted); font-size:13.5px}
 .credit{margin:18px auto 0; display:inline-block; line-height:1.9; font-weight:800; font-size:17px; filter:drop-shadow(0 0 10px rgba(231,195,106,.35))}
@@ -146,9 +146,9 @@ footer .dis{color:var(--muted); font-size:13.5px}
   #panel{order:4; width:100%; min-width:0}
   .brand b{font-size:20px}
   .vids{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:9px}
-  .counter{padding:6px 12px 6px 10px} .counter .num{font-size:17px}
+  .counter{padding:4px 10px 4px 8px; gap:5px} .counter .num{font-size:15px} .counter .lb{display:none}
 }
-@media (max-width:520px){ .find{display:none} .find.open{display:flex; position:absolute; top:var(--bar); inset-inline:0; max-width:none; margin:0; border-radius:0; background:var(--bg); z-index:31} #findBtn{display:grid!important} .bar-in{justify-content:space-between} }
+@media (max-width:520px){ .bar-in{gap:6px; padding:0 8px} .brand img{width:30px; height:30px} .brand b{font-size:17px} .ib{width:36px; height:36px; font-size:16px; border-radius:11px} .counter{padding:3px 8px} .counter .eye{font-size:13px} .counter .num{font-size:13.5px} .find{display:none} .find.open{display:flex; position:absolute; top:var(--bar); inset-inline:0; max-width:none; margin:0; border-radius:0; background:var(--bg); z-index:31} #findBtn{display:grid!important} .bar-in{justify-content:space-between} }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
 </style>
 </head>
@@ -156,6 +156,7 @@ footer .dis{color:var(--muted); font-size:13.5px}
 <div class="bar"><div class="bar-in">
   <button class="brand" id="home" aria-label="الرئيسية"><img src="icon.svg" alt=""><b class="gold">المسك المختوم</b></button>
   <form class="find" id="find"><input id="q" type="search" placeholder="ابحث في المقاطع: قارئ، سورة، درس، خطبة..." autocomplete="off" aria-label="بحث"></form>
+  <div class="counter" id="counter" hidden title="عدد زوار الموقع"><span class="eye">👁</span><span class="num" id="cnum">0</span><span class="lb">زائر</span></div>
   <button class="ib" id="findBtn" style="display:none" aria-label="بحث">🔍</button>
   <button class="ib" id="favBtn" title="المفضلة" aria-label="المفضلة">★</button>
   <button class="ib" id="theme" title="تبديل المظهر" aria-label="تبديل المظهر">☀</button>
@@ -192,7 +193,6 @@ footer .dis{color:var(--muted); font-size:13.5px}
   </div>
 </footer>
 
-<div class="counter" id="counter" hidden title="عدد زوار الموقع"><span class="eye">👁</span><span class="num" id="cnum">0</span><span class="lb">زائر</span></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -259,7 +259,7 @@ const CATS = [
   items:[I("أذان المسجد الحرام","أذان المسجد الحرام"),I("أذان المسجد النبوي","أذان المسجد النبوي"),I("أذان الفجر","أذان الفجر"),
          I("أجمل أذان","أجمل أذان في العالم"),I("صلاة الفجر من الحرم","صلاة الفجر من المسجد الحرام"),I("صلاة التهجد","صلاة التهجد من الحرم المكي")]},
  {id:"anasheed", t:"الأناشيد", d:"أناشيد وابتهالات", ic:"🎵", a:"#ec4899", b:"#be185d",
-  items:[I("أناشيد بدون موسيقى","أناشيد إسلامية بدون موسيقى"),I("أناشيد هادئة","أناشيد إسلامية هادئة"),I("مدائح نبوية","مدائح نبوية"),
+  items:[I("طال ليلي — يوسف الأيوب","طال ليلي يوسف الأيوب"),I("أناشيد بدون موسيقى","أناشيد إسلامية بدون موسيقى"),I("أناشيد هادئة","أناشيد إسلامية هادئة"),I("مدائح نبوية","مدائح نبوية"),
          I("ابتهالات","ابتهالات دينية"),I("أناشيد رمضان"),I("أناشيد العيد"),I("أناشيد الأعراس","أناشيد أعراس إسلامية")]},
  {id:"kids", t:"ركن الأطفال", d:"تعليم ممتع للصغار", ic:"🧒", a:"#eab308", b:"#a16207",
   items:[I("تعليم القرآن للأطفال"),I("جزء عمّ للأطفال","جزء عم للأطفال مكرر"),I("قصص الأنبياء للأطفال"),I("كرتون إسلامي","كرتون إسلامي للأطفال"),
@@ -353,12 +353,12 @@ function panel(){
   p.innerHTML = h;
 }
 
-function openCat(id){
+function openCat(id, quiet){
   const cat = CATS.find(c => c.id === id); if (!cat) return;
   view = {cat:id, item:0, rec:null, list:DATA.items[cat.items[0].q] || [], label:cat.items[0].t};
   sides(); panel();
   if (cur.type == null && view.list.length) cue(view.list, 0);
-  if (matchMedia("(max-width:980px)").matches) $("panel").scrollIntoView({block:"nearest", behavior:"smooth"});
+  if (!quiet && matchMedia("(max-width:980px)").matches) $("panel").scrollIntoView({block:"nearest", behavior:"smooth"});
 }
 function openItem(i){
   const cat = CATS.find(c => c.id === view.cat);
@@ -467,7 +467,7 @@ function route(){
   const id = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
   if (id === "@fav"){ view = {cat:"@fav", item:null, rec:null, list:favs.slice(), label:"المفضلة"}; sides(); panel(); }
   else if (CATS.some(c => c.id === id)) openCat(id);
-  else { view = {cat:null, item:null, rec:null, list:[], label:""}; sides(); panel(); }
+  else openCat("anasheed", true);
 }
 window.addEventListener("hashchange", route);
 
