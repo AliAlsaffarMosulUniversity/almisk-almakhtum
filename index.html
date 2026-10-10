@@ -207,7 +207,7 @@ footer .dis{color:var(--muted); font-size:13.5px}
 .cbtns a:hover{transform:translateY(-2px); filter:brightness(1.1)}
 .sitebtn{color:#2a1c02; background:var(--shine); background-size:220% 100%; animation:shine 3s linear infinite; box-shadow:0 6px 16px rgba(216,169,74,.4)}
 .cbtns .fb{background:#1877f2; color:#fff; box-shadow:0 6px 16px rgba(24,119,242,.4)}
-@media (max-width:520px){ :root{--bar:98px} .bar-in{flex-wrap:wrap; align-content:center; row-gap:5px} .lrow{display:flex; order:9; flex:0 0 100%; justify-content:center; align-items:center; gap:10px} .lg{width:30px; height:30px; font-size:14px} [dir="ltr"] .brand b{font-size:15px} .ccard{flex-direction:column; text-align:center; padding:18px; gap:12px} .cbtns{justify-content:center} }
+@media (max-width:520px){ [dir="ltr"] .brand b{font-size:15px} .ccard{flex-direction:column; text-align:center; padding:18px; gap:12px} .cbtns{justify-content:center} }
 .credit .nm{font-size:23px; display:block}
 .credit span{display:block}
 
@@ -221,6 +221,7 @@ footer .dis{color:var(--muted); font-size:13.5px}
   .v .tx b{font-size:13.5px; line-height:1.4}
   .star{width:30px; height:30px; bottom:3px; inset-inline-end:3px; font-size:16px}
 }
+@media (max-width:860px){ :root{--bar:102px} .bar-in{flex-wrap:wrap; align-content:center; row-gap:5px} .lrow{display:flex; order:9; flex:0 0 100%; justify-content:center; align-items:center; gap:10px} .lg{width:30px; height:30px; font-size:14px} .fbox,.fgo{height:40px} }
 @media (max-width:980px){
   .stage{display:flex; flex-direction:column; gap:10px; padding:0 10px}
   .mid{display:contents}
@@ -653,18 +654,25 @@ function autoStart(){                       // يشغّل النشيد تلقا�
   };
   setTimeout(() => check(0), 1800);
 }
-function captions(){            // ترجمة الفيديو باللغة المختارة، إن وفّرها يوتيوب لهذا المقطع
+let capDone = "";
+function captions(){            // ترجمة الفيديو باللغة المختارة: مسار بلغتها إن وُجد، وإلا ترجمة يوتيوب الآلية
   if (RTL || !player || !player.setOption) return;
   try {
+    const vid = (player.getVideoData() || {}).video_id || ""; if (!vid || capDone === vid) return;
     player.loadModule && player.loadModule("captions");
-    const list = player.getOption("captions", "tracklist") || [];
-    const own = list.find(t => (t.languageCode || "").slice(0, 2) === LANG);
-    if (own) player.setOption("captions", "track", {languageCode: own.languageCode});
-    else if (list.length) player.setOption("captions", "track", {languageCode: list[0].languageCode, translationLanguage: {languageCode: LANG, languageName: LANG === "de" ? "Deutsch" : "English"}});
+    const cur = player.getOption("captions", "track") || {}, list = player.getOption("captions", "tracklist") || [];
+    const is = t => t && (t.languageCode || "").slice(0, 2) === LANG;
+    if (is(cur) && !cur.translationLanguage){ capDone = vid; return; }
+    const own = list.find(is);
+    if (own){ player.setOption("captions", "track", own); capDone = vid; return; }
+    const base = cur.languageCode ? cur : list[0]; if (!base) return;
+    const tl = (player.getOption("captions", "translationLanguages") || []).find(t => t.languageCode === LANG);
+    if (!tl) return;
+    player.setOption("captions", "track", Object.assign({}, base, {translationLanguage: tl})); capDone = vid;
   } catch(e){}
 }
 function onState(e){
-  if (e.data === 1){ errRun = 0; setTimeout(captions, 900); }
+  if (e.data === 1){ errRun = 0; [700, 2000, 4500, 8000].forEach(ms => setTimeout(captions, ms)); }
   if (e.data === 1 || e.data === 3 || e.data === -1 || e.data === 5){
     const i = player.getPlaylistIndex ? player.getPlaylistIndex() : -1;
     if (i >= 0 && i !== cur.idx){ cur.idx = i; if (cur.type === "pl") cur.title = (i < SURAHS.length && (DATA.rec[view.rec] || {}).ord ? "سورة " + SURAHS[i] + " — " : "") + (view.rec || ""); }
