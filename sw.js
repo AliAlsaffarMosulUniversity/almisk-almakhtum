@@ -1,4 +1,4 @@
-const CACHE = "misk-v3";
+const CACHE = "misk-v4";
 const SHELL = ["./", "index.html", "data.json", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

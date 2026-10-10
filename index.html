@@ -66,6 +66,7 @@ button,input,select{font-family:inherit; color:inherit}
 .screen{position:relative; width:100%; max-width:calc((100vh - var(--bar) - 340px) * 16 / 9); min-width:min(100%,380px); margin:0 auto; aspect-ratio:16/9; background:#000; border-radius:20px; overflow:hidden;
   border:2px solid color-mix(in srgb,var(--gold) 70%,transparent); box-shadow:0 0 0 6px rgba(231,195,106,.09), 0 22px 50px rgba(0,0,0,.55)}
 .screen iframe,.screen #yt{position:absolute; inset:0; width:100%; height:100%; border:0}
+#unmute{position:absolute; top:12px; inset-inline:0; margin:auto; width:max-content; z-index:5; border:0; cursor:pointer; border-radius:999px; padding:9px 18px; font-weight:800; font-size:15px; color:#2a1c02; background:var(--shine); background-size:220% 100%; animation:shine 3s linear infinite; box-shadow:0 6px 20px rgba(0,0,0,.5)}
 .poster{position:absolute; inset:0; display:grid; place-content:center; text-align:center; padding:18px; color:#f3f7f4;
   background:radial-gradient(600px 300px at 50% 0,rgba(16,185,129,.35),transparent 70%),linear-gradient(160deg,#0b2a20,#04100c)}
 .poster .aya{font-family:"Amiri",serif; font-size:clamp(18px,3vw,28px); margin:0}
@@ -396,6 +397,23 @@ function ensure(cb){
 }
 function cue(list, i){ cur = {type:"vids", list:list.slice(), idx:i, pl:null, title:""}; ensure(() => player.cuePlaylist(cur.list.map(v => v[0]), i)); nowBar(); mark(); }
 function play(list, i){ errRun = 0; cur = {type:"vids", list:list.slice(), idx:i, pl:null, title:""}; ensure(() => player.loadPlaylist(cur.list.map(v => v[0]), i)); nowBar(); mark(); }
+let autoDone = false;
+function autoStart(){
+  if (autoDone || !view.list.length) return; autoDone = true;
+  errRun = 0; cur = {type:"vids", list:view.list.slice(), idx:0, pl:null, title:""};
+  ensure(() => { player.loadPlaylist(cur.list.map(v => v[0]), 0); setTimeout(autoCheck, 2500); });
+  nowBar(); mark();
+}
+function autoCheck(n){
+  n = n || 0; let s = -1; try { s = player.getPlayerState(); } catch(e){}
+  if (s === 1) return;                                   // يعمل بالصوت
+  if (s === 3 && n < 3) return setTimeout(() => autoCheck(n + 1), 1500);
+  try { player.mute(); player.playVideo(); } catch(e){}  // المتصفح منع الصوت: نشغّل صامتاً
+  const b = document.createElement("button"); b.id = "unmute"; b.type = "button"; b.innerHTML = "🔊 اضغط لتشغيل الصوت";
+  $("screen").appendChild(b);
+  const on = () => { try { player.unMute(); player.setVolume(100); player.playVideo(); } catch(e){} b.remove(); document.removeEventListener("pointerdown", on, true); document.removeEventListener("keydown", on, true); };
+  document.addEventListener("pointerdown", on, true); document.addEventListener("keydown", on, true);
+}
 function onState(e){
   if (e.data === 1) errRun = 0;
   if (e.data === 1 || e.data === 3 || e.data === -1 || e.data === 5){
@@ -468,7 +486,7 @@ function route(){
   const id = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
   if (id === "@fav"){ view = {cat:"@fav", item:null, rec:null, list:favs.slice(), label:"المفضلة"}; sides(); panel(); }
   else if (CATS.some(c => c.id === id)) openCat(id);
-  else openCat("anasheed", true);
+  else { openCat("anasheed", true); autoStart(); }
 }
 window.addEventListener("hashchange", route);
 
