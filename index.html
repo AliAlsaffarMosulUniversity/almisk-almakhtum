@@ -70,6 +70,7 @@ button,input,select{font-family:inherit; color:inherit}
 .screen{position:relative; flex:0 1 calc((100vh - var(--bar) - 196px) * 16 / 9); min-width:0; aspect-ratio:16/9; background:#000; border-radius:20px; overflow:hidden;
   border:2px solid color-mix(in srgb,var(--gold) 70%,transparent); box-shadow:0 0 0 6px rgba(231,195,106,.09), 0 22px 50px rgba(0,0,0,.55)}
 .screen iframe,.screen #yt{position:absolute; inset:0; width:100%; height:100%; border:0}
+#sndHint{position:absolute; top:10px; inset-inline:0; margin:auto; width:max-content; max-width:92%; z-index:5; pointer-events:none; border-radius:999px; padding:7px 16px; font-weight:800; font-size:14.5px; color:#2a1c02; background:var(--shine); background-size:220% 100%; animation:shine 3s linear infinite; box-shadow:0 6px 18px rgba(0,0,0,.5)}
 .poster{position:absolute; inset:0; display:grid; place-content:center; text-align:center; padding:18px; color:#f3f7f4;
   background:radial-gradient(600px 300px at 50% 0,rgba(16,185,129,.35),transparent 70%),linear-gradient(160deg,#0b2a20,#04100c)}
 .poster .aya{font-family:"Amiri",serif; font-size:clamp(18px,3vw,28px); margin:0}
@@ -538,17 +539,22 @@ function ensure(cb){
 function cue(list, i){ cur = {type:"vids", list:list.slice(), idx:i, pl:null, title:""}; ensure(() => player.cuePlaylist(cur.list.map(v => v[0]), i)); nowBar(); mark(); }
 function play(list, i){ errRun = 0; const s = Math.max(0, i - 20); cur = {type:"vids", list:list.slice(s, s + 150), idx:i - s, pl:null, title:""}; i = cur.idx; ensure(() => player.loadPlaylist(cur.list.map(v => v[0]), i)); nowBar(); mark(); }
 let autoDone = false;
-function autoStart(){                       // يحاول تشغيل النشيد بالصوت عند فتح الصفحة
+function autoStart(){                       // يشغّل النشيد تلقائياً عند فتح الصفحة
   if (autoDone || !view.list.length) return; autoDone = true;
   play(view.list, 0);
-  setTimeout(() => {
-    let s = -1; try { s = player.getPlayerState(); } catch(e){}
-    if (s === 1 || s === 3) return;         // يعمل بالصوت
-    // المتصفح منع الصوت قبل أول لمسة: لا نكتم، بل نبدأ بالصوت عند أول لمسة في الصفحة
-    const on = () => { document.removeEventListener("pointerdown", on, true); document.removeEventListener("keydown", on, true);
-      try { const st = player.getPlayerState(); if (st !== 1 && st !== 3){ player.unMute(); player.setVolume(100); player.playVideo(); } } catch(e){} };
-    document.addEventListener("pointerdown", on, true); document.addEventListener("keydown", on, true);
-  }, 3000);
+  const check = (n) => {
+    let s = -2; try { s = player.getPlayerState(); } catch(e){}
+    if (s === 1) return;                                   // يعمل بالصوت
+    if ((s === 3 || s === -2) && n < 6) return setTimeout(() => check(n + 1), 700);
+    // المتصفح منع الصوت قبل أول لمسة: نشغّل الصورة فوراً، والصوت يعود تلقائياً مع أول لمسة
+    try { player.mute(); player.playVideo(); } catch(e){}
+    const hint = document.createElement("div"); hint.id = "sndHint"; hint.textContent = "🔇 المس أي مكان لتشغيل الصوت";
+    $("screen").appendChild(hint);
+    const on = () => { ["pointerdown","touchend","keydown"].forEach(ev => document.removeEventListener(ev, on, true));
+      try { player.unMute(); player.setVolume(100); player.playVideo(); } catch(e){} hint.remove(); };
+    ["pointerdown","touchend","keydown"].forEach(ev => document.addEventListener(ev, on, true));
+  };
+  setTimeout(() => check(0), 1800);
 }
 function onState(e){
   if (e.data === 1) errRun = 0;
